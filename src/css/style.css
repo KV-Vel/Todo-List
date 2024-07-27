@@ -1,8 +1,308 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 
+:root {
+    /*===ALL===*/
+    --highlight-color: #cf3639;
+    --first-color: #7d8471;
+    --second-color: #4e4e4e;
+    --text-color: #ffffff;
+    --default-border-radius: 5px;
+    --hover-background: #e0e0cb;
+
+    /*===SMALL DEVICES===*/
+    --small-font-size: 0.9rem;
+
+    /*===HEADER===*/
+    --header-background: #f5f5dc;
+    --header-padding-icons: 0.625rem;
+    --header-transition: 0.5s ease;
+}
+
 body {
+    display: flex;
+    
+    font-size: var(--desktop-font-size);
     font-family: 'Manrope', sans-serif;
 }
 
+/*====HEADER====*/
+header,
+.side-menu,
+.header-wrapper,
+button {
+    transition: var(--header-transition);
+}
+
+header,
+.header-wrapper {
+    width: 300px;      /*in future change to 320px?*/
+}
+
+header.shrink-menu {
+    width: 0;
+}
+/*===BURGER MENU===*/
+.side-menu {
+    padding: var(--header-padding-icons);
+    border-radius: var(--default-border-radius);
+    position: absolute;
+
+    top: 15px;
+    left: 230px;
+
+    cursor: pointer;
+
+    z-index: 2;
+}
+
+.side-menu:hover {
+    background-color: #f5f5dc3b;
+}
+
+i {
+    cursor: pointer;
+}
+
+.side-menu > i {
+    color: var(--hover-background);
+    font-size: 20px;
+}
+
+#burger-menu-input {
+    display: block;
+    position: absolute;
+    opacity: 0;
+}
+
+input:checked ~ .header-wrapper {
+    transform: translateX(-300px);
+}
+
+input:checked + label {
+    left: 50px;
+}
+
+.header-wrapper {
+    background-color: var(--header-background);
+    height: 100vh;
+    font-size: var(--small-font-size);
+}
+
+.h1-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 1.2rem;
+
+    color: var(--text-color);
+    background-color: var(--first-color);
+}
+
+/*===NAV===*/
+nav * {
+    padding: var(--header-padding-icons);
+}
+
+li,
+.projects-wrapper-navigation {
+    display: flex;
+    align-items: center;
+}
+
+li {
+    cursor: pointer;
+    color: var(--second-color);
+}
+
+li:hover {
+    background-color: var(--hover-background);
+}
+
+.icon-wrapper {
+    height: 36px;
+    width: 34px;
+
+    padding: 2px;
+    margin-right: 15px;
+
+    background-color: var(--first-color);
+    border-radius: 5px;
+
+    text-align: center;
+}
+
+.icon-wrapper > i {
+    color: #242424bf;
+}
+
+.projects-wrapper-navigation {
+    justify-content: space-between;
+}
+
+.projects-wrapper-navigation > h2 {
+    color: var(--second-color);
+}
+
+.add-task-wrapper {
+    display: flex;
+    padding-right: var(--header-padding-icons);
+    margin: 20px 0 0 0.625rem;
+}
+
+/*===HEADER BUTTONS===*/
+
+.add-task-btn,
+.add-project-btn {
+    box-shadow: 0px 0px 0 6px #cf363938;
+    background-color: var(--highlight-color);
+}
+
+.add-task-btn {
+    padding: 10px;
+    font-size: var(--small-font-size);
+}
+
+.add-project-btn {
+    height: 30px;
+    width: 30px;
+
+    padding: 0;
+    margin-right: 30px;
+}
+
+button {
+    color: var(--text-color);
+    font-weight: 900;
+   
+    border-radius: var(--default-border-radius);
+}
+
+button:hover {
+    box-shadow: none;
+}
+
+/*===MAIN===*/
+
+.wrapper {
+    width: 100%;
+    font-size: var(--small-font-size);
+    background-color: #65581f80;
+    color: var(--text-color);
+}
+
+main {
+    width: calc(50% + 8rem);
+    margin: 10vh auto 10vh auto;
+    max-width: 850px;
+}
+
+main > div {
+    margin: 25px 0;
+}
+
+.section-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+}
+
+.section-wrapper::after {
+    content:'';
+    position: absolute;
+    top: 45px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--second-color);
+}
+
+.section-wrapper > span {
+    color: var(--second-color);
+    background-color: var(--hover-background);
+    padding: 10px;
+    border-radius: var(--default-border-radius);
+}
+
+.section-header {
+    font-size: 2em; /*Add to variables?*/
+}
+
+.project {
+    display: flex;
+    justify-content: space-between;
+    
+    background-color: var(--first-color);
+    padding: 1.5rem 2.5rem;
+    border-radius: 15px;
+}
+
+.projects-list > li {
+    border-bottom: 3px solid transparent;
+}
+
+.projects-list > li:hover {
+    border-bottom: 3px solid var(--first-color);
+}
+
+.project-btn-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.fa-rectangle-xmark,
+.fa-square-pen {
+    color: var(--hover-background);
+    border-radius: var(--default-border-radius);
+    transition: var(--header-transition);
+    margin-left: 10px;
+}
+
+.fa-rectangle-xmark:hover,
+.fa-square-pen:hover {
+   transform: scale(110%);
+}
+
+
+.project-btn-wrapper > button > .fa-rectangle-xmark {
+    font-size: 1.7rem;
+}
+
+.project-btn-wrapper > button > .fa-square-pen {
+    font-size: 1.8rem;
+}
+
+.projects-list-wrapper,
+.projects-wrapper-navigation {
+    padding: 0 var(--header-padding-icons);
+}
+
 /**
-1) Add checklist when clicking on task*/
+1) Add checklist when clicking on task
+2) Add number of tasks next to li for each
+3) Взять еще Второй шрифт?
+https://fontawesome.com/search?p=2&o=r&m=free
+https://www.notion.so/Getting-Started-766bbf7f76854e6f8d717b4c801a87fc
+https://coolors.co/palettes/popular/#7d8471
+https://www.youtube.com/watch?v=I6MKwkJcn7I
+https://www.youtube.com/watch?v=Nh-aFPbdnWo
+https://app.todoist.com/app/today
+
+MOBILE FIRST PLEAAAAAAAAAAASE*/
+/*z-INDEX On slide-menu*/
+/*Глянуть
+https://www.youtube.com/watch?v=P80sM7ausCA*/
+
+/*Сделать чтобы сбоку от задачи отображалась дата тип Thu
+                                                      30
+                                                      November*/
+
+/*Add status mark and mark selection*/
+
+/*https://app.any.do/tasks/next-seven-days?d=anydo%3A%2F%2Fanydo%3Faction%3Dtasktab
+https://ux.pub/dexa/polnoie-rukovodstvo-po-mietiematichieskoi-css-funktsii-calc-s-primierami-1o4k*/
+
+/*Change paddin on header*/

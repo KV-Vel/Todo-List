@@ -3,31 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Todo List</title>
 </head>
 <body>
     <header>
-        <h1>To Do App</h1>
-        <nav>
-            <button type="button">+ Add task</button>
-            <ul>
-                <li>Today</li>
-                <li>Next 7 days</li>
-                <li>Next 30 days</li>
-                <li>Someday</li>
-            </ul>
-            <div>
-                <h2>Projects</h2>
-                <button type="button">+ Add project</button>
+        <input type="checkbox" id="burger-menu-input">
+        <label for="burger-menu-input" class="side-menu">
+            <i class="fa-solid fa-list"></i>
+        </label>
+        <div class="header-wrapper">
+            <div class="h1-wrapper">
+                <h1>To Do App</h1>
             </div>
-        </nav>
+            <nav>
+                <div class="add-task-wrapper">
+                    <button type="button" class="add-task-btn">New task</button>
+                </div>
+                <ul>
+                    <li><div class="icon-wrapper"><i class="fa-solid fa-exclamation"></i></div>Today</li>
+                    <li><div class="icon-wrapper"><i class="fa-solid fa-7"></i></div>Next 7 days</li>
+                    <li><div class="icon-wrapper"><i class="fa-regular fa-calendar-days"></i></div>Next 30 days</li>
+                    <li><div class="icon-wrapper"><i class="fa-solid fa-clipboard-question"></i></div>Someday</li>
+                </ul>
+                <div>
+                    <div class="projects-wrapper-navigation">
+                        <h2>Projects<i class="fa-solid fa-angle-down"></i></h2>
+                        <button type="button" class="add-project-btn">+</button>
+                    </div>
+                    <div class="projects-list-wrapper">
+                        <ul class="projects-list">
+                            <li>#Home</li>
+                            <li>#Demo</li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
     </header>
     <div class="wrapper">
-        <div>
-            <h2>Task name</h2>
-            <button type="button">delete change btn</button>
-        </div>
-        <p>Short description of current task</p>
+        <main>
+            <div class="section-wrapper">
+                <h2 class="section-header">Section</h2>
+                <span>3 task: 2 subtask</span> <!--Number of tasks and subtasks-->
+            </div>
+            <div class="projects-wrapper-main">
+                <div class="project">
+                    <div class="project-btn-wrapper">
+                        <h3 class="project-header">Task title And Something bigger</h3>
+                        <span>Dead line in: 3 days</span>
+                    </div>
+                    <!-- <p class="project-notes">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia numquam, voluptates nobis pariatur autem assumenda laboriosam ex impedit minus! Accusamus, soluta. Labore commodi adipisci eum fuga. Repellendus dolores cumque non?
+                    Perferendis, eius harum soluta ipsum dolores nobis sit molestias quidem dolor architecto animi saepe qui laboriosam aperiam aut rem hic. Qui, impedit deserunt. Quaerat amet corporis culpa harum autem provident?
+                    </p> -->
+                    <div class="project-btn-wrapper">
+                        <button type="button" class="project-btn delete-project-btn"><i class="fa-solid fa-rectangle-xmark"></i></button>
+                        <button type="button" class="project-btn change-project-btn"><i class="fa-solid fa-square-pen"></i></button>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 </body>
 </html>
