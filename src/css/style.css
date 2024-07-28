@@ -8,18 +8,24 @@
     --text-color: #ffffff;
     --default-border-radius: 5px;
     --hover-background: #e0e0cb;
+    
+    /*===TASK PRIORITIES===*/
+    --priority1: 192, 56, 59;
+    --priority2: 226, 159, 55;
+    --priority3: 141, 177, 78;
 
     /*===SMALL DEVICES===*/
     --small-font-size: 0.9rem;
 
     /*===HEADER===*/
     --header-background: #f5f5dc;
-    --header-padding-icons: 0.625rem;
+    --header-padding: 0.7rem;
     --header-transition: 0.5s ease;
 }
 
 body {
     display: flex;
+   
     
     font-size: var(--desktop-font-size);
     font-family: 'Manrope', sans-serif;
@@ -27,7 +33,7 @@ body {
 
 /*====HEADER====*/
 header,
-.side-menu,
+.side-menu-icon,
 .header-wrapper,
 button {
     transition: var(--header-transition);
@@ -35,15 +41,17 @@ button {
 
 header,
 .header-wrapper {
-    width: 300px;      /*in future change to 320px?*/
+    width: 300px; /*in future change to 320px?*/
+    min-height: 100vh;     
 }
 
 header.shrink-menu {
     width: 0;
 }
+
 /*===BURGER MENU===*/
-.side-menu {
-    padding: var(--header-padding-icons);
+.side-menu-icon {
+    padding: var(--header-padding);
     border-radius: var(--default-border-radius);
     position: absolute;
 
@@ -55,7 +63,7 @@ header.shrink-menu {
     z-index: 2;
 }
 
-.side-menu:hover {
+.side-menu-icon:hover {
     background-color: #f5f5dc3b;
 }
 
@@ -63,7 +71,7 @@ i {
     cursor: pointer;
 }
 
-.side-menu > i {
+.side-menu-icon > i {
     color: var(--hover-background);
     font-size: 20px;
 }
@@ -82,9 +90,11 @@ input:checked + label {
     left: 50px;
 }
 
+/*===LOGO-WRAPPER===*/
+
 .header-wrapper {
     background-color: var(--header-background);
-    height: 100vh;
+    height: auto;
     font-size: var(--small-font-size);
 }
 
@@ -93,19 +103,28 @@ input:checked + label {
     align-items: center;
     justify-content: space-between;
 
-    padding: 1.2rem;
+    padding: 1.2rem 1.4rem;
 
     color: var(--text-color);
     background-color: var(--first-color);
 }
 
 /*===NAV===*/
-nav * {
-    padding: var(--header-padding-icons);
+
+nav,
+.projects-list > li{
+    padding: 1.2rem var(--header-padding);
 }
 
+nav > ul *,
+nav > .projects-wrapper-list > div {
+    padding: var(--header-padding);
+}
+
+/*===TASK-LIST===*/
+
 li,
-.projects-wrapper-navigation {
+.projects-wrapper-header {
     display: flex;
     align-items: center;
 }
@@ -136,18 +155,71 @@ li:hover {
     color: #242424bf;
 }
 
-.projects-wrapper-navigation {
+.projects-wrapper-header {
     justify-content: space-between;
 }
 
-.projects-wrapper-navigation > h2 {
+.projects-wrapper-header > h2 {
     color: var(--second-color);
 }
 
 .add-task-wrapper {
     display: flex;
-    padding-right: var(--header-padding-icons);
-    margin: 20px 0 0 0.625rem;
+    flex-direction: column;
+    gap: 15px;
+    margin: 1.2rem var(--header-padding);
+}
+
+.task,
+.task-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.task{
+    background-color: var(--first-color);
+    padding: 1.5rem 2.5rem;
+    border-radius: 15px;
+}
+
+.projects-list > li {
+    border-bottom: 3px solid transparent;
+}
+
+.projects-list > li:hover {
+    border-bottom: 3px solid var(--first-color);
+}
+
+.task-wrapper{
+    flex-direction: column;
+    gap: 10px;
+}
+
+.fa-rectangle-xmark,
+.fa-square-pen {
+    color: var(--hover-background);
+    border-radius: var(--default-border-radius);
+    transition: var(--header-transition);
+    margin-left: 10px;
+}
+
+.fa-rectangle-xmark:hover,
+.fa-square-pen:hover {
+   transform: scale(110%);
+}
+
+
+.task-wrapper> button > .fa-rectangle-xmark {
+    font-size: 1.7rem;
+}
+
+.task-wrapper> button > .fa-square-pen {
+    font-size: 1.8rem;
+}
+
+.projects-list-wrapper,
+.projects-wrapper-header {
+    padding: 0 var(--header-padding);
 }
 
 /*===HEADER BUTTONS===*/
@@ -159,6 +231,7 @@ li:hover {
 }
 
 .add-task-btn {
+    max-width: 35%;
     padding: 10px;
     font-size: var(--small-font-size);
 }
@@ -183,7 +256,6 @@ button:hover {
 }
 
 /*===MAIN===*/
-
 .wrapper {
     width: 100%;
     font-size: var(--small-font-size);
@@ -229,56 +301,145 @@ main > div {
     font-size: 2em; /*Add to variables?*/
 }
 
-.project {
-    display: flex;
-    justify-content: space-between;
+
+/*===FORM ADD TASK===*/
+    .form-wrapper {
+        display:grid;
+        width: 95%;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 500ms;
+        border: 1px solid transparent;
+    }
+
+    form {
+        background-color: #cf363938;
+        position: relative;
+        overflow: hidden;
+    }
+
+    form > label {
+        display: flex;
+        flex-direction: column;
+        margin: 20px 0 0 20px;
+        color: var(--text-color);
+        font-weight: 800;
+        width: 85%;
+    }
     
-    background-color: var(--first-color);
-    padding: 1.5rem 2.5rem;
-    border-radius: 15px;
-}
+    form > label:last-child {
+        margin-bottom: 20px;
+    }
 
-.projects-list > li {
-    border-bottom: 3px solid transparent;
-}
+    form > label > input[type="text"],
+    form > label > textarea,
+    input[type="date"] {
+        background-color: var(--text-color);
+       
+        margin-top: 5px;
+        border-radius: var(--default-border-radius);
+        padding: 5px;
+        border: 1px solid transparent;
+        transition: var(--header-transition);
+    }
 
-.projects-list > li:hover {
-    border-bottom: 3px solid var(--first-color);
-}
+    input:focus[type="text"],
+    input:focus[type="date"],
+    textarea:focus {
+        border: 1px solid var(--highlight-color);
+        outline: none;
+    }
 
-.project-btn-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    gap: 10px;
-}
+    input[type="date"] {
+        color: var(--second-color);
+        font-weight: 500;
+    }
 
-.fa-rectangle-xmark,
-.fa-square-pen {
-    color: var(--hover-background);
-    border-radius: var(--default-border-radius);
-    transition: var(--header-transition);
-    margin-left: 10px;
-}
+    .form-priority-inputs {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 5px;
+        margin-top: 5px;
+    }
 
-.fa-rectangle-xmark:hover,
-.fa-square-pen:hover {
-   transform: scale(110%);
-}
+    .form-priority-inputs > label {
+        text-align: center;
+        padding: 8px;
+        border-radius: var(--default-border-radius);
+        cursor: pointer;
+        opacity: 0.5;
+        flex-grow: 1;
+        transition: var(--header-transition);
+    }
 
+    .form-priority-inputs > input:nth-child(1) + label {
+       background-color: rgba(var(--priority1));
+    }
 
-.project-btn-wrapper > button > .fa-rectangle-xmark {
-    font-size: 1.7rem;
-}
+    .form-priority-inputs > input:nth-child(3) + label {
+        background-color: rgba(var(--priority2));
+     }
 
-.project-btn-wrapper > button > .fa-square-pen {
-    font-size: 1.8rem;
-}
+     .form-priority-inputs > input:nth-child(5) + label {
+        background-color: rgba(var(--priority3));
+     }
 
-.projects-list-wrapper,
-.projects-wrapper-navigation {
-    padding: 0 var(--header-padding-icons);
-}
+    .form-priority-inputs > input {
+        display: none;
+        text-align: center;
+    }
+
+    input[type="radio"]:checked + label {
+        opacity: 1;
+        flex-grow: 2;
+    }
+
+    .subtask-label {
+        position: relative;
+    }
+
+    .subtask-add-btn {
+        position: absolute;
+        top: 20px;
+        left: 89%;
+        color: blue;
+        padding: 14px 7px;
+        border-radius: var(--default-border-radius);
+    }
+
+    .subtask-add-btn:hover {
+        background-color: lightblue;
+    }
+
+    textarea {
+        overflow: hidden;
+    }
+
+    .create-task-btn {
+        width: 100%;
+        background-color: var(--highlight-color);
+        margin-top: 20px;
+        border-radius: 0 0 var(--default-border-radius) var(--default-border-radius);
+        padding: 10px 0;
+    }
+
+    .form-wrapper.expand-form {
+        grid-template-rows: 1fr;
+        border: 1px solid var(--highlight-color);
+        border-radius: var(--default-border-radius);
+    }
+
+    @keyframes expandForm {
+        from {
+            height: 0%;
+            display: none;
+            
+        } to {
+            height: 100%;
+            display: block;
+        }
+    }
+
+    /*===FORM ADD PROJECT===*/
 
 /**
 1) Add checklist when clicking on task
@@ -305,4 +466,10 @@ https://www.youtube.com/watch?v=P80sM7ausCA*/
 /*https://app.any.do/tasks/next-seven-days?d=anydo%3A%2F%2Fanydo%3Faction%3Dtasktab
 https://ux.pub/dexa/polnoie-rukovodstvo-po-mietiematichieskoi-css-funktsii-calc-s-primierami-1o4k*/
 
-/*Change paddin on header*/
+/*Change paddin on header, align all*/
+
+/*FORM label should also hav >  sign to expand inputs*/
+/*USE DATE PICKER TO STYLE CALENDAR? I DONT LIKE THAT YOU SHOULD CLICK OTHER BUTTON TO CHOOSE DATE*/
+
+/*Still check how to make outline text 2024*/
+/*POSSIBLE TO DO: center add subtask btn in textarea*/
