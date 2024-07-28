@@ -79,3 +79,7 @@ button, input {
   dialog {
 	padding: 0;
   }
+
+  textarea {
+	resize: none;
+  }

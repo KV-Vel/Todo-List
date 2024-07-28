@@ -9,7 +9,7 @@
 <body>
     <header>
         <input type="checkbox" id="burger-menu-input">
-        <label for="burger-menu-input" class="side-menu">
+        <label for="burger-menu-input" class="side-menu-icon">
             <i class="fa-solid fa-list"></i>
         </label>
         <div class="header-wrapper">
@@ -19,6 +19,34 @@
             <nav>
                 <div class="add-task-wrapper">
                     <button type="button" class="add-task-btn">New task</button>
+                    <div class="form-wrapper">
+                        <form class="new-task-dialog" aria-label="New task dialog window">
+                            <label>Task title
+                                <input type="text">
+                            </label>
+                            <label for="description">Description
+                                <textarea id="description"></textarea>
+                            </label>
+                            <label>Deadline
+                                <input type="date">
+                            </label>
+                            <label>Priority
+                                <div class="form-priority-inputs">
+                                   <input type="radio" name="priority" id="priority1">
+                                   <label for="priority1">1</label>
+                                   <input type="radio" name="priority" id="priority2">
+                                   <label for="priority2">2</label>
+                                   <input type="radio" name="priority" id="priority3">
+                                   <label for="priority3">3</label>
+                                </div>
+                            </label>
+                            <label class="subtask-label">Subtasks
+                                <textarea></textarea>
+                                <button type="button" class="subtask-add-btn"><i class="fa-solid fa-arrow-turn-up"></i></button>
+                            </label>
+                            <button type="submit" class="create-task-btn">Create task</button>
+                        </form>
+                    </div>
                 </div>
                 <ul>
                     <li><div class="icon-wrapper"><i class="fa-solid fa-exclamation"></i></div>Today</li>
@@ -26,8 +54,8 @@
                     <li><div class="icon-wrapper"><i class="fa-regular fa-calendar-days"></i></div>Next 30 days</li>
                     <li><div class="icon-wrapper"><i class="fa-solid fa-clipboard-question"></i></div>Someday</li>
                 </ul>
-                <div>
-                    <div class="projects-wrapper-navigation">
+                <div class="projects-wrapper-list">
+                    <div class="projects-wrapper-header">
                         <h2>Projects<i class="fa-solid fa-angle-down"></i></h2>
                         <button type="button" class="add-project-btn">+</button>
                     </div>
@@ -47,16 +75,16 @@
                 <h2 class="section-header">Section</h2>
                 <span>3 task: 2 subtask</span> <!--Number of tasks and subtasks-->
             </div>
-            <div class="projects-wrapper-main">
-                <div class="project">
-                    <div class="project-btn-wrapper">
+            <div class="tasks-wrapper-main">
+                <div class="task">
+                    <div class="task-wrapper">
                         <h3 class="project-header">Task title And Something bigger</h3>
                         <span>Dead line in: 3 days</span>
                     </div>
                     <!-- <p class="project-notes">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia numquam, voluptates nobis pariatur autem assumenda laboriosam ex impedit minus! Accusamus, soluta. Labore commodi adipisci eum fuga. Repellendus dolores cumque non?
                     Perferendis, eius harum soluta ipsum dolores nobis sit molestias quidem dolor architecto animi saepe qui laboriosam aperiam aut rem hic. Qui, impedit deserunt. Quaerat amet corporis culpa harum autem provident?
                     </p> -->
-                    <div class="project-btn-wrapper">
+                    <div class="task-wrapper">
                         <button type="button" class="project-btn delete-project-btn"><i class="fa-solid fa-rectangle-xmark"></i></button>
                         <button type="button" class="project-btn change-project-btn"><i class="fa-solid fa-square-pen"></i></button>
                     </div>
