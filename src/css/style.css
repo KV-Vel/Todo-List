@@ -25,8 +25,7 @@
 
 body {
     display: flex;
-   
-    
+
     font-size: var(--desktop-font-size);
     font-family: 'Manrope', sans-serif;
 }
@@ -42,11 +41,30 @@ button {
 header,
 .header-wrapper {
     width: 300px; /*in future change to 320px?*/
-    min-height: 100vh;     
+    min-height: 100vh;  
+    position: fixed;
+    z-index: 1;   
 }
 
 header.shrink-menu {
     width: 0;
+}
+
+header{ 
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-shrink: 0;
+}
+
+/*Chrome, Safari, Opera hidding scroll bar*/
+header::-webkit-scrollbar {
+    display: none;
+}
+
+header{
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 /*===BURGER MENU===*/
@@ -87,31 +105,37 @@ input:checked ~ .header-wrapper {
 }
 
 input:checked + label {
-    left: 50px;
+    left: 5px;
+}
+
+.mobile-burger-menu {
+    display: block;
 }
 
 /*===LOGO-WRAPPER===*/
 
 .header-wrapper {
     background-color: var(--header-background);
-    height: auto;
     font-size: var(--small-font-size);
+    position: relative;
 }
 
 .h1-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
+    
+    width: 255px;
     padding: 1.2rem 1.4rem;
-
+    z-index: 1;
     color: var(--text-color);
     background-color: var(--first-color);
 }
 
 /*===NAV===*/
-
-nav,
+nav {
+    padding: 1.2rem var(--header-padding);
+}
 .projects-list > li{
     padding: 1.2rem var(--header-padding);
 }
@@ -170,16 +194,23 @@ li:hover {
     margin: 1.2rem var(--header-padding);
 }
 
-.task,
-.task-wrapper {
+.visible-part,
+.task-wrapper,
+.task-wrapper-buttons {
     display: flex;
     justify-content: space-between;
 }
 
+.task-wrapper-buttons {
+    flex-direction: column;
+    gap: 2px;
+}
+
 .task{
     background-color: var(--first-color);
-    padding: 1.5rem 2.5rem;
+    padding: 1.2rem 2rem;
     border-radius: 15px;
+    margin-bottom: 15px;
 }
 
 .projects-list > li {
@@ -195,8 +226,40 @@ li:hover {
     gap: 10px;
 }
 
+.hidden-part {
+    font-size: 0.8rem;
+    margin-top: 10px;
+
+    display:grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 500ms;
+    
+}
+
+.hidden-part-wrapper {
+    overflow: hidden;
+}
+
+.hidden-part-wrapper > p {
+    margin-bottom: 10px;
+}
+
+.hidden-part.active {
+    grid-template-rows: 1fr;
+}
+
+.hidden-part > div > form,
+.hidden-part > div > form > ul > li:hover {
+    background: transparent;
+}
+
+.hidden-part > div > form > ul > li {
+    color: var(--text-color);
+}
+
 .fa-rectangle-xmark,
-.fa-square-pen {
+.fa-square-pen,
+.fa-square-check {
     color: var(--hover-background);
     border-radius: var(--default-border-radius);
     transition: var(--header-transition);
@@ -204,17 +267,21 @@ li:hover {
 }
 
 .fa-rectangle-xmark:hover,
-.fa-square-pen:hover {
+.fa-square-pen:hover,
+.fa-square-check:hover {
    transform: scale(110%);
 }
 
+.task-wrapper-buttons > button > .fa-rectangle-xmark {
+    font-size: 1.45rem;
+}
 
-.task-wrapper> button > .fa-rectangle-xmark {
+.task-wrapper-buttons > button > .fa-square-check{
     font-size: 1.7rem;
 }
 
-.task-wrapper> button > .fa-square-pen {
-    font-size: 1.8rem;
+.task-wrapper-buttons> button > .fa-square-pen {
+    font-size: 1.62rem;
 }
 
 .projects-list-wrapper,
@@ -222,6 +289,36 @@ li:hover {
     padding: 0 var(--header-padding);
 }
 
+.show-projects-list {
+    color: var(--second-color);
+    margin-left: 5px;
+}
+
+.projects-list {
+    transition: var(--header-transition);
+}
+
+.projects-list.hidden {
+    animation: hideList 500ms both;
+}
+
+@keyframes hideList {
+  100% {
+        opacity: 0;
+        transform: translateY(-50px);
+        display: none;
+    }
+}
+
+.expand-btn-wrapper {
+    width: 100%;
+    text-align: center;
+}
+
+.expand-btn-wrapper > button {
+    color: var(--header-background);
+    font-style: italic;
+}
 /*===HEADER BUTTONS===*/
 
 .add-task-btn,
@@ -257,10 +354,12 @@ button:hover {
 
 /*===MAIN===*/
 .wrapper {
-    width: 100%;
+    width: auto;
+    flex-grow: 1;
     font-size: var(--small-font-size);
     background-color: #65581f80;
     color: var(--text-color);
+    min-height: 100vh;
 }
 
 main {
@@ -278,6 +377,7 @@ main > div {
     align-items: center;
     gap: 15px;
     position: relative;
+    padding-left: 5px;
 }
 
 .section-wrapper::after {
@@ -317,7 +417,7 @@ main > div {
         overflow: hidden;
     }
 
-    form > label {
+    .new-task-form > label {
         display: flex;
         flex-direction: column;
         margin: 20px 0 0 20px;
@@ -342,7 +442,7 @@ main > div {
         transition: var(--header-transition);
     }
 
-    input:focus[type="text"],
+    .new-task-form > input:focus[type="text"],
     input:focus[type="date"],
     textarea:focus {
         border: 1px solid var(--highlight-color);
@@ -414,7 +514,8 @@ main > div {
         overflow: hidden;
     }
 
-    .create-task-btn {
+    .create-task-btn,
+    .add-project-submit {
         width: 100%;
         background-color: var(--highlight-color);
         margin-top: 20px;
@@ -427,20 +528,55 @@ main > div {
         border: 1px solid var(--highlight-color);
         border-radius: var(--default-border-radius);
     }
+    /*===dialog ADD PROJECT===*/
 
-    @keyframes expandForm {
-        from {
-            height: 0%;
-            display: none;
-            
-        } to {
-            height: 100%;
-            display: block;
-        }
+    dialog {
+        width: 260px;
+        border: 1px solid var(--highlight-color);
+        border-radius: var(--default-border-radius);
     }
 
-    /*===FORM ADD PROJECT===*/
+    .add-project-form > div {
+        position: relative;
+        width: 100%;
+        
+    }
 
+    .add-project-input {
+        width: 97%;
+        height: 100%;
+        background-color: var(--text-color);
+        border-radius: 0px;
+        padding-left: 7px;
+        height: 100px;
+        font-size: 20px;
+        border-radius: var(--default-border-radius) var(--default-border-radius) 0 0;
+    }
+
+    .add-project-form {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        align-items: center;
+    }
+
+    .add-project-form > .add-project-submit {
+        margin: 0;
+    }
+
+    .close-modal {
+        position: absolute;
+        top:3px;
+        left: 92%;
+        color: var(--highlight-color);
+        z-index: 99;
+        padding: 5px;
+    }
+    @media (min-width: 650px){
+        header {
+            position: static;  
+        }
+    }
 /**
 1) Add checklist when clicking on task
 2) Add number of tasks next to li for each
@@ -473,3 +609,11 @@ https://ux.pub/dexa/polnoie-rukovodstvo-po-mietiematichieskoi-css-funktsii-calc-
 
 /*Still check how to make outline text 2024*/
 /*POSSIBLE TO DO: center add subtask btn in textarea*/
+
+/*Close add task form when add project form is opened
+show task spread it down
+z-index for header
+*/
+
+/*Show more change to show-less...*/
+/*Add subtask in form should have smaller icon so it could fit in input*/

@@ -7,11 +7,13 @@
     <title>Todo List</title>
 </head>
 <body>
-    <header>
+    <div class="mobile-burger-menu">
         <input type="checkbox" id="burger-menu-input">
-        <label for="burger-menu-input" class="side-menu-icon">
-            <i class="fa-solid fa-list"></i>
-        </label>
+            <label for="burger-menu-input" class="side-menu-icon mobile">
+                <i class="fa-solid fa-list"></i>
+            </label>
+    </div>
+    <header>
         <div class="header-wrapper">
             <div class="h1-wrapper">
                 <h1>To Do App</h1>
@@ -20,7 +22,7 @@
                 <div class="add-task-wrapper">
                     <button type="button" class="add-task-btn">New task</button>
                     <div class="form-wrapper">
-                        <form class="new-task-dialog" aria-label="New task dialog window">
+                        <form class="new-task-form" aria-label="New task dialog window">
                             <label>Task title
                                 <input type="text">
                             </label>
@@ -56,8 +58,19 @@
                 </ul>
                 <div class="projects-wrapper-list">
                     <div class="projects-wrapper-header">
-                        <h2>Projects<i class="fa-solid fa-angle-down"></i></h2>
+                        <h2>Projects<button class="show-projects-list"><i class="fa-solid fa-angle-down"></i></button></h2>
                         <button type="button" class="add-project-btn">+</button>
+                        <dialog aria-label="Add new project to todo list">
+                            <button type="button" class="close-modal">X</button>
+                            <form class="add-project-form">
+                                <div>
+                                    <label>
+                                        <input type="text" class="add-project-input" placeholder="Enter new project name">
+                                    </label>
+                                </div>
+                                <button type="submit" class="add-project-submit">Add new project</button>
+                            </form>
+                        </dialog>
                     </div>
                     <div class="projects-list-wrapper">
                         <ul class="projects-list">
@@ -73,20 +86,45 @@
         <main>
             <div class="section-wrapper">
                 <h2 class="section-header">Section</h2>
-                <span>3 task: 2 subtask</span> <!--Number of tasks and subtasks-->
+                <span>3 task</span> <!--Number of tasks and subtasks-->
             </div>
             <div class="tasks-wrapper-main">
                 <div class="task">
-                    <div class="task-wrapper">
-                        <h3 class="project-header">Task title And Something bigger</h3>
-                        <span>Dead line in: 3 days</span>
+                    <div class="visible-part">
+                        <div class="task-wrapper">
+                            <h3 class="project-header">Task title And Something bigger</h3>
+                            <span>31.07.2024 (in 3 days)</span>
+                            <span>Priority: <i class="fa-solid fa-circle"></i></span>
+                        </div>
+                        <div class="task-wrapper-buttons">
+                            <button type="button" class="project-btn check-project-btn"><i class="fa-solid fa-square-check"></i></button>
+                            <button type="button" class="project-btn change-project-btn"><i class="fa-solid fa-square-pen"></i></button>
+                            <button type="button" class="project-btn delete-project-btn"><i class="fa-solid fa-rectangle-xmark"></i></button>
+                        </div>
                     </div>
-                    <!-- <p class="project-notes">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia numquam, voluptates nobis pariatur autem assumenda laboriosam ex impedit minus! Accusamus, soluta. Labore commodi adipisci eum fuga. Repellendus dolores cumque non?
-                    Perferendis, eius harum soluta ipsum dolores nobis sit molestias quidem dolor architecto animi saepe qui laboriosam aperiam aut rem hic. Qui, impedit deserunt. Quaerat amet corporis culpa harum autem provident?
-                    </p> -->
-                    <div class="task-wrapper">
-                        <button type="button" class="project-btn delete-project-btn"><i class="fa-solid fa-rectangle-xmark"></i></button>
-                        <button type="button" class="project-btn change-project-btn"><i class="fa-solid fa-square-pen"></i></button>
+                    <div class="hidden-part">
+                        <div class="hidden-part-wrapper">
+                            <p>Provident est, accusamus hic distinctio quas pariatur!Labore facere obcaecati quam veritatis ducimus fugiat officiis eveniet amet harum error quas illum beatae veniam quod, soluta qui repellat? Vel quaerat eius earum libero culpa accusantium alias quae enim!</p>
+                            <form>
+                                <ul>
+                                    <li>
+                                        <input type="checkbox" id="subtask1">
+                                        <label for="subtask1">Get better</label>
+                                    </li>
+                                    <li>
+                                        <input type="checkbox" id="subtask2">
+                                        <label for="subtask2">Keep grinding</label>
+                                    </li>
+                                    <li>
+                                        <input type="checkbox" id="subtask3">
+                                        <label for="subtask3">Do whatever it takes</label>
+                                    </li>
+                                </ul>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="expand-btn-wrapper">
+                        <button type="button" class="task-show-more-btn">Show more...</button>
                     </div>
                 </div>
             </div>
