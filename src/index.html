@@ -24,17 +24,17 @@
                     <div class="form-wrapper">
                         <form class="new-task-form" aria-label="New task dialog window">
                             <label>Task title
-                                <input type="text">
+                                <input type="text" required>
                             </label>
                             <label for="description">Description
                                 <textarea id="description"></textarea>
                             </label>
                             <label>Deadline
-                                <input type="date">
+                                <input type="date" required>
                             </label>
                             <label>Priority
                                 <div class="form-priority-inputs">
-                                   <input type="radio" name="priority" id="priority1">
+                                   <input type="radio" name="priority" id="priority1" checked>
                                    <label for="priority1">1</label>
                                    <input type="radio" name="priority" id="priority2">
                                    <label for="priority2">2</label>
@@ -42,6 +42,12 @@
                                    <label for="priority3">3</label>
                                 </div>
                             </label>
+                            <div class="subtask-group">
+                                <div class="subtask">
+                                    <p>Hellow I'm your new subtaskfffffffff</p>
+                                    <button type="button"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                            </div>
                             <label class="subtask-label">Subtasks
                                 <textarea></textarea>
                                 <button type="button" class="subtask-add-btn"><i class="fa-solid fa-arrow-turn-up"></i></button>

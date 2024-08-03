@@ -108,12 +108,7 @@ input:checked + label {
     left: 5px;
 }
 
-.mobile-burger-menu {
-    display: block;
-}
-
 /*===LOGO-WRAPPER===*/
-
 .header-wrapper {
     background-color: var(--header-background);
     font-size: var(--small-font-size);
@@ -121,13 +116,11 @@ input:checked + label {
 }
 
 .h1-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    
     width: 255px;
     padding: 1.2rem 1.4rem;
     z-index: 1;
+    position: sticky;
+    top: 0;
     color: var(--text-color);
     background-color: var(--first-color);
 }
@@ -425,6 +418,29 @@ main > div {
         font-weight: 800;
         width: 85%;
     }
+
+    .new-task-form > .subtask-group {
+        margin: 20px 0 0 20px;
+
+        color: var(--second-color);
+        background-color: lightblue;
+        width: 85%;
+        border-radius: var(--default-border-radius);
+    }
+
+    .subtask {
+        display: flex;
+        justify-content: space-between;
+        gap: 5px;
+        font-size: 0.8rem;
+        padding: var(--header-padding);
+    }
+
+    .subtask > p {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
     
     form > label:last-child {
         margin-bottom: 20px;
@@ -442,7 +458,7 @@ main > div {
         transition: var(--header-transition);
     }
 
-    .new-task-form > input:focus[type="text"],
+    .new-task-form > label > input:focus[type="text"],
     input:focus[type="date"],
     textarea:focus {
         border: 1px solid var(--highlight-color);
@@ -497,12 +513,19 @@ main > div {
         position: relative;
     }
 
+    .subtask-label > textarea {
+        padding-right: 25px;
+    }
+
     .subtask-add-btn {
         position: absolute;
-        top: 20px;
+        top: 23px;
         left: 89%;
         color: blue;
-        padding: 14px 7px;
+        /* padding: 14px 7px; */
+        
+        height: 35px;
+        width: 20px;
         border-radius: var(--default-border-radius);
     }
 
