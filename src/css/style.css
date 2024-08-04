@@ -420,26 +420,34 @@ main > div {
     }
 
     .new-task-form > .subtask-group {
-        margin: 20px 0 0 20px;
 
         color: var(--second-color);
-        background-color: lightblue;
         width: 85%;
-        border-radius: var(--default-border-radius);
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        
+        margin: 10px 20px 10px 20px;
     }
 
     .subtask {
         display: flex;
         justify-content: space-between;
-        gap: 5px;
+        
         font-size: 0.8rem;
         padding: var(--header-padding);
+        
+        border-radius: var(--default-border-radius);
+        
+        width: calc(100% - 24px);
+        background-color: lightblue;
     }
 
     .subtask > p {
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
+        padding: 2px 0;
     }
     
     form > label:last-child {
