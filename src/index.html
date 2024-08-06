@@ -22,23 +22,23 @@
                 <div class="add-task-wrapper">
                     <button type="button" class="add-task-btn">New task</button>
                     <div class="form-wrapper">
-                        <form class="new-task-form" aria-label="New task dialog window">
-                            <label>Task title
-                                <input type="text" required>
+                        <form class="new-task-form" aria-label="New task dialog window" method="post">
+                            <label>Task title *
+                                <input type="text" name="title" required>
                             </label>
                             <label for="description">Description
-                                <textarea id="description"></textarea>
+                                <textarea id="description" name="description"></textarea>
                             </label>
-                            <label>Deadline
-                                <input type="date" required>
+                            <label>Deadline *
+                                <input type="date" name="deadline" required>
                             </label>
                             <label>Priority
                                 <div class="form-priority-inputs">
-                                   <input type="radio" name="priority" id="priority1" checked>
+                                   <input type="radio" name="priority" id="priority1"  value="1" checked>
                                    <label for="priority1">1</label>
-                                   <input type="radio" name="priority" id="priority2">
+                                   <input type="radio" name="priority" id="priority2" value="2" >
                                    <label for="priority2">2</label>
-                                   <input type="radio" name="priority" id="priority3">
+                                   <input type="radio" name="priority" id="priority3" value="3" >
                                    <label for="priority3">3</label>
                                 </div>
                             </label>
