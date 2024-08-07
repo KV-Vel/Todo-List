@@ -16,4 +16,14 @@ export default class UI {
   static createTask(taskData) {
 
   }
+
+  static createProject(projectData) {
+    const projectsList = document.querySelector('.projects-list');
+
+    const newProject = this.createDomElement('li', {
+      textContent: `#${projectData}`,
+    });
+
+    projectsList.append(newProject);
+  }
 }

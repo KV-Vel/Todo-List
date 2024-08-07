@@ -4,11 +4,7 @@ export default class Form {
     return input;
   }
 
-  static resetFormFields(formName) {
-    formName.reset();
-  }
+  static resetFormFields = (formName) => formName.reset();
 
-  static collectData(form) {
-    return new FormData(form);
-  }
+  static collectData = (form) => new FormData(form);
 }

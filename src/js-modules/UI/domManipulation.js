@@ -120,10 +120,11 @@ UI.addEventListener(taskForm, 'submit', (e) => {
   Form.resetFormFields(taskForm);
 });
 
-// UI.addEventListener(newProjectButton, 'click', () => {
-//   const formData = Form.collectData(projectForm);
+UI.addEventListener(projectForm, 'submit', (e) => {
+  e.preventDefault();
+  const formData = Form.collectData(projectForm);
 
-//   // New branch git
-
-//   dialog.close();
-// });
+  UI.createProject(...formData.getAll('project-name'));
+  Form.resetFormFields(projectForm);
+  dialog.close();
+});
