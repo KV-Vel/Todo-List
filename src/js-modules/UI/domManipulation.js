@@ -2,6 +2,7 @@ import UI from './UI';
 import Form from '../Form/Form';
 import Task from '../Task/Task';
 import TaskForm from '../Form/TaskForm';
+import Project from '../Project/Project';
 
 /* Header slide left and right  */
 const burgerMenuInput = document.querySelector('input');
@@ -51,14 +52,34 @@ function hideProjects() {
 UI.addEventListener(showProjectsBtn, 'click', hideProjects);
 
 /* Task expand/shrink */
-const hiddenPartOfTask = document.querySelector('.hidden-part');
-const showMoreBtn = document.querySelector('.task-show-more-btn');
+// const hiddenPartOfTask = document.querySelector('.hidden-part');
+// const showMoreBtn = document.querySelector('.task-show-more-btn');
 
-function toggleTaskDetails() {
-  hiddenPartOfTask.classList.toggle('active');
+// function toggleTaskDetails() {
+//   hiddenPartOfTask.classList.toggle('active');
+// }
+
+// UI.addEventListener(showMoreBtn, 'click', toggleTaskDetails);
+
+/* Toggling active class for navbar lists */
+const navLi = document.querySelector('nav');
+
+function removeFoundActiveStyle() {
+  const [...navigation] = document.querySelectorAll('.navigation');
+  navigation.find((elem) => elem.classList.contains('active')).classList.remove('active');
 }
 
-UI.addEventListener(showMoreBtn, 'click', toggleTaskDetails);
+function toggleActiveList(e) {
+  if (e.target.tagName === 'LI') {
+    removeFoundActiveStyle();
+    e.target.classList.add('active');
+  }
+}
+
+UI.addEventListener(navLi, 'click', (e) => {
+  toggleActiveList(e);
+  UI.renderActiveLi(e);
+});
 
 /* Add subtask to form */
 const subTaskButton = document.querySelector('.subtask-add-btn');
@@ -107,6 +128,7 @@ const [taskForm, projectForm] = document.querySelectorAll('form');
 
 UI.addEventListener(taskForm, 'submit', (e) => {
   e.preventDefault();
+
   const formData = Form.collectData(taskForm);
   const newTask = new Task(
     ...formData.getAll('title'),
@@ -115,6 +137,15 @@ UI.addEventListener(taskForm, 'submit', (e) => {
     ...formData.getAll('priority'),
     formData.getAll('subtask'),
   );
+  Task.addTaskInstances(newTask);
+
+  UI.createTask(
+    newTask.title,
+    newTask.description,
+    newTask.deadline,
+    newTask.priority,
+    newTask.subtasks,
+  );
 
   TaskForm.deleteAllSubtasksAutomatically(taskForm);
   Form.resetFormFields(taskForm);
@@ -122,9 +153,13 @@ UI.addEventListener(taskForm, 'submit', (e) => {
 
 UI.addEventListener(projectForm, 'submit', (e) => {
   e.preventDefault();
-  const formData = Form.collectData(projectForm);
 
-  UI.createProject(...formData.getAll('project-name'));
+  const formData = Form.collectData(projectForm);
+  const newProject = new Project(...formData.getAll('project-name'));
+
+  Project.addProjectInstace(newProject);
+
+  UI.createProject(newProject.name);
   Form.resetFormFields(projectForm);
   dialog.close();
 });

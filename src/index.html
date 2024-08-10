@@ -52,10 +52,10 @@
                     </div>
                 </div>
                 <ul>
-                    <li><div class="icon-wrapper"><i class="fa-solid fa-exclamation"></i></div>Today</li>
-                    <li><div class="icon-wrapper"><i class="fa-solid fa-7"></i></div>Next 7 days</li>
-                    <li><div class="icon-wrapper"><i class="fa-regular fa-calendar-days"></i></div>Next 30 days</li>
-                    <li><div class="icon-wrapper"><i class="fa-solid fa-clipboard-question"></i></div>Someday</li>
+                    <li data-name="Today" class="navigation navigation-li active"><div class="icon-wrapper"><i class="fa-solid fa-exclamation"></i></div>Today</li>
+                    <li data-name="Next 7 days" class="navigation navigation-li"><div class="icon-wrapper"><i class="fa-solid fa-7"></i></div>Next 7 days</li>
+                    <li data-name="Next 30 days" class="navigation navigation-li"><div class="icon-wrapper"><i class="fa-regular fa-calendar-days"></i></div>Next 30 days</li>
+                    <li data-name="Someday" class="navigation navigation-li"><div class="icon-wrapper"><i class="fa-solid fa-clipboard-question"></i></div>Someday</li>
                 </ul>
                 <div class="projects-wrapper-list">
                     <div class="projects-wrapper-header">
@@ -75,8 +75,8 @@
                     </div>
                     <div class="projects-list-wrapper">
                         <ul class="projects-list">
-                            <li>#Home</li>
-                            <li>#Demo</li>
+                            <li data-name="Home" class="navigation navigation-li-proj">#Home</li>
+                            <li data-name="Demo" class="navigation navigation-li-proj">#Demo</li>
                         </ul>
                     </div>
                 </div>
@@ -86,14 +86,14 @@
     <div class="wrapper">
         <main>
             <div class="section-wrapper">
-                <h2 class="section-header">Section</h2>
+                <h2 class="section-header">Today</h2>
                 <span>3 task</span> <!--Number of tasks and subtasks-->
             </div>
             <div class="tasks-wrapper-main">
-                <div class="task">
+                <!-- <div class="task">
                     <div class="visible-part">
                         <div class="task-wrapper">
-                            <h3 class="project-header">Task title And Something bigger</h3>
+                            <h3>Task title And Something bigger</h3>
                             <span>31.07.2024 (in 3 days)</span>
                             <span>Priority: <i class="fa-solid fa-circle"></i></span>
                         </div>
@@ -127,7 +127,7 @@
                     <div class="expand-btn-wrapper">
                         <button type="button" class="task-show-more-btn">Show more...</button>
                     </div>
-                </div>
+                </div> -->
             </div>
         </main>
     </div>

@@ -28,6 +28,7 @@ body {
 
     font-size: var(--desktop-font-size);
     font-family: 'Manrope', sans-serif;
+    
 }
 
 /*====HEADER====*/
@@ -68,6 +69,7 @@ header{
 }
 
 /*===BURGER MENU===*/
+
 .side-menu-icon {
     padding: var(--header-padding);
     border-radius: var(--default-border-radius);
@@ -128,6 +130,7 @@ input:checked + label {
 /*===NAV===*/
 nav {
     padding: 1.2rem var(--header-padding);
+    height: calc(100% - 525px);
 }
 .projects-list > li{
     padding: 1.2rem var(--header-padding);
@@ -139,6 +142,9 @@ nav > .projects-wrapper-list > div {
 }
 
 /*===TASK-LIST===*/
+li > * {
+    pointer-events: none; /*Prevents icon to be listed in e.target click event*/
+}
 
 li,
 .projects-wrapper-header {
@@ -153,6 +159,15 @@ li {
 
 li:hover {
     background-color: var(--hover-background);
+}
+
+.navigation-li.active {
+    background-color: var(--hover-background);
+}
+
+.navigation-li,
+.navigation-li-proj {
+    margin: 5px 0;
 }
 
 .icon-wrapper {
@@ -211,6 +226,11 @@ li:hover {
 }
 
 .projects-list > li:hover {
+    border-bottom: 3px solid var(--first-color);
+}
+
+.navigation-li-proj.active {
+    background-color: var(--hover-background);
     border-bottom: 3px solid var(--first-color);
 }
 
@@ -352,13 +372,15 @@ button:hover {
     font-size: var(--small-font-size);
     background-color: #65581f80;
     color: var(--text-color);
-    min-height: 100vh;
+    height: 100vh;
+    overflow-y: auto;
 }
 
 main {
     width: calc(50% + 8rem);
-    margin: 10vh auto 10vh auto;
+    margin: 9vh auto 6vh auto;
     max-width: 850px;
+    overflow: auto;
 }
 
 main > div {
@@ -505,6 +527,19 @@ main > div {
 
      .form-priority-inputs > input:nth-child(5) + label {
         background-color: rgba(var(--priority3));
+     }
+     
+     /*setting priority after user input*/
+     .fa-circle.red{
+        color: rgba(var(--priority1));
+     }
+
+     .fa-circle.yellow{
+        color: rgba(var(--priority2));
+     }
+
+     .fa-circle.green{
+        color: rgba(var(--priority3));
      }
 
     .form-priority-inputs > input {
