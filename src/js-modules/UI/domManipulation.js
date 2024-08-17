@@ -1,8 +1,10 @@
 import UI from './UI';
+import FormUI from '../Form/Form-UI';
 import Form from '../Form/Form';
 import Task from '../Task/Task';
-import TaskForm from '../Form/TaskForm';
 import Project from '../Project/Project';
+// import TaskUI from '../Task/Task-UI';
+// import ProjectUI from '../Project/Project-UI';
 
 /* Header slide left and right  */
 const burgerMenuInput = document.querySelector('input');
@@ -12,7 +14,7 @@ function toggleBurgerMenu() {
   header.classList.toggle('shrink-menu');
 }
 
-UI.addEventListener(burgerMenuInput, 'change', toggleBurgerMenu);
+burgerMenuInput.addEventListener('change', toggleBurgerMenu);
 
 /* Add task form expand */
 const addTaskBtn = document.querySelector('.add-task-btn');
@@ -22,7 +24,7 @@ function expandForm() {
   formWrapper.classList.toggle('expand-form');
 }
 
-UI.addEventListener(addTaskBtn, 'click', expandForm);
+addTaskBtn.addEventListener('click', expandForm);
 
 /* Dialog add project, close and open */
 const addProjectBtn = document.querySelector('.add-project-btn');
@@ -32,7 +34,7 @@ function showDialog() {
   dialog.showModal();
 }
 
-UI.addEventListener(addProjectBtn, 'click', showDialog);
+addProjectBtn.addEventListener('click', showDialog);
 
 const modalCloseBtn = document.querySelector('.close-modal');
 
@@ -40,7 +42,7 @@ function closeModal() {
   dialog.close();
 }
 
-UI.addEventListener(modalCloseBtn, 'click', closeModal);
+modalCloseBtn.addEventListener('click', closeModal);
 
 /* Project list show/hide */
 const showProjectsBtn = document.querySelector('.show-projects-list');
@@ -49,117 +51,77 @@ const projectsList = document.querySelector('.projects-list');
 function hideProjects() {
   projectsList.classList.toggle('hidden');
 }
-UI.addEventListener(showProjectsBtn, 'click', hideProjects);
 
-/* Task expand/shrink */
-// const hiddenPartOfTask = document.querySelector('.hidden-part');
-// const showMoreBtn = document.querySelector('.task-show-more-btn');
-
-// function toggleTaskDetails() {
-//   hiddenPartOfTask.classList.toggle('active');
-// }
-
-// UI.addEventListener(showMoreBtn, 'click', toggleTaskDetails);
+showProjectsBtn.addEventListener('click', hideProjects);
 
 /* Toggling active class for navbar lists */
 const navLi = document.querySelector('nav');
 
-function removeFoundActiveStyle() {
-  const [...navigation] = document.querySelectorAll('.navigation');
-  navigation.find((elem) => elem.classList.contains('active')).classList.remove('active');
-}
-
-function toggleActiveList(e) {
+navLi.addEventListener('click', (e) => {
   if (e.target.tagName === 'LI') {
-    removeFoundActiveStyle();
+    UI.removeFoundActiveStyle();
     e.target.classList.add('active');
+    UI.setSectionHeaderFromAttribute(e.target, 'data-name');
+  }
+});
+
+function deleteProject(e) {
+  if (e.target.classList.contains('fa-trash-can')) {
+    const dataNameAttributeOfProject = e.target.parentNode.parentNode.getAttribute('data-name');
+    const projectElement = e.target.parentNode.parentNode;
+    UI.removeFoundActiveStyle();
+    // UI delete Project
+    projectElement.remove();
+    // Inner delete from array
+    Project.deleteProject(dataNameAttributeOfProject);
+
+    UI.selectTabByAttribute('data-name', 'All');
+    FormUI.updateOptionList(Project.getAllProjects());
   }
 }
 
-UI.addEventListener(navLi, 'click', (e) => {
-  toggleActiveList(e);
-  UI.renderActiveLi(e);
-});
-
+// delete project event
+projectsList.addEventListener('click', deleteProject);
 /* Add subtask to form */
 const subTaskButton = document.querySelector('.subtask-add-btn');
-
-function createSubTask() {
-  const subTaskGroup = document.querySelector('.subtask-group');
-  const subtaskTextArea = document.querySelector('.subtask-textarea');
-
-  const subtaskDiv = UI.createDomElement('div', {
-    className: 'subtask',
-  });
-
-  const subtaskPara = UI.createDomElement('input', {
-    value: `${subtaskTextArea.value}`,
-    type: 'text',
-    name: 'subtask',
-  });
-
-  const deleteSubtaskBtn = UI.createDomElement('button', {
-    type: 'button',
-  });
-
-  const crossIcon = UI.createDomElement('i', {
-    className: 'fa-solid fa-xmark',
-  });
-
-  deleteSubtaskBtn.append(crossIcon);
-
-  subtaskDiv.append(subtaskPara, deleteSubtaskBtn);
-
-  subTaskGroup.append(subtaskDiv);
-
-  /* Clear subtask input field after adding */
-  subtaskTextArea.value = Form.clearInput(subtaskTextArea); // remove to diff place
-}
-
-UI.addEventListener(subTaskButton, 'click', createSubTask);
+subTaskButton.addEventListener('click', FormUI.createSubTaskUI);
 
 /* Delete subtask btn */
 const subtaskGroup = document.querySelector('.subtask-group');
 
-UI.addEventListener(subtaskGroup, 'click', TaskForm.deleteSubtaskManually);
+subtaskGroup.addEventListener('click', FormUI.deleteSubtaskUI);
 
 /* Event listeners for creating task and project */
 const [taskForm, projectForm] = document.querySelectorAll('form');
 
-UI.addEventListener(taskForm, 'submit', (e) => {
+taskForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  const formData = Form.collectData(taskForm);
-  const newTask = new Task(
-    ...formData.getAll('title'),
-    ...formData.getAll('description'),
-    ...formData.getAll('deadline'),
-    ...formData.getAll('priority'),
-    formData.getAll('subtask'),
-  );
-  Task.addTaskInstances(newTask);
-
-  UI.createTask(
-    newTask.title,
-    newTask.description,
-    newTask.deadline,
-    newTask.priority,
-    newTask.subtasks,
-  );
-
-  TaskForm.deleteAllSubtasksAutomatically(taskForm);
-  Form.resetFormFields(taskForm);
+  const collectedData = Form.getCollectedData(taskForm);
+  Task.createTask(collectedData);
+  Form.resetForm(taskForm, UI.deleteAllSubtasksAutomatically());
 });
 
-UI.addEventListener(projectForm, 'submit', (e) => {
+projectForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  const formData = Form.collectData(projectForm);
-  const newProject = new Project(...formData.getAll('project-name'));
+  const collectedData = Form.getCollectedData(projectForm);
 
-  Project.addProjectInstace(newProject);
-
-  UI.createProject(newProject.name);
-  Form.resetFormFields(projectForm);
+  Project.createProject(collectedData);
+  FormUI.updateOptionList(Project.getAllProjects());
+  Form.resetForm(projectForm);
   dialog.close();
 });
+
+/**
+ *  Пределать названия функций на более понятные\
+ * сделать функции более реюзабельными? И затем еще раз проверить функционал deleteProject. В идеал с помощью одной функции
+ * нужно удалять и тудушники, и проджекты и остальнео
+ * 2) change task
+ * 3) delete task
+ * 4) set task as done
+ * 5) switch between projects
+ * 6) render all project in create task form
+ * 7) Make possible to delete Home project/ Either save it with
+ * localStorage or apply default project function on window load
+ */

@@ -32,13 +32,19 @@
                             <label>Deadline *
                                 <input type="date" name="deadline" required>
                             </label>
+                            <label>Project *
+                                <select required name="project">
+                                    <option value="" disabled selected>Select project</option>
+                                    <option>Home</option>
+                                </select>
+                            </label>
                             <label>Priority
                                 <div class="form-priority-inputs">
-                                   <input type="radio" name="priority" id="priority1"  value="1" checked>
+                                   <input type="radio" name="priority" id="priority1"  value="red" checked>
                                    <label for="priority1">1</label>
-                                   <input type="radio" name="priority" id="priority2" value="2" >
+                                   <input type="radio" name="priority" id="priority2" value="yellow" >
                                    <label for="priority2">2</label>
-                                   <input type="radio" name="priority" id="priority3" value="3" >
+                                   <input type="radio" name="priority" id="priority3" value="green" >
                                    <label for="priority3">3</label>
                                 </div>
                             </label>
@@ -52,7 +58,8 @@
                     </div>
                 </div>
                 <ul>
-                    <li data-name="Today" class="navigation navigation-li active"><div class="icon-wrapper"><i class="fa-solid fa-exclamation"></i></div>Today</li>
+                    <li data-name="All" class="navigation navigation-li active"><div class="icon-wrapper"><i class="fa-solid fa-globe"></i></div>All</li>
+                    <li data-name="Today" class="navigation navigation-li"><div class="icon-wrapper"><i class="fa-solid fa-exclamation"></i></div>Today</li>
                     <li data-name="Next 7 days" class="navigation navigation-li"><div class="icon-wrapper"><i class="fa-solid fa-7"></i></div>Next 7 days</li>
                     <li data-name="Next 30 days" class="navigation navigation-li"><div class="icon-wrapper"><i class="fa-regular fa-calendar-days"></i></div>Next 30 days</li>
                     <li data-name="Someday" class="navigation navigation-li"><div class="icon-wrapper"><i class="fa-solid fa-clipboard-question"></i></div>Someday</li>
@@ -75,8 +82,10 @@
                     </div>
                     <div class="projects-list-wrapper">
                         <ul class="projects-list">
-                            <li data-name="Home" class="navigation navigation-li-proj">#Home</li>
-                            <li data-name="Demo" class="navigation navigation-li-proj">#Demo</li>
+                            <li data-name="Home" class="navigation navigation-li-proj">#Home
+                                <button class="delete-project-btn"><i class="fa-solid fa-trash-can"></i></button>
+                            </li>
+                            
                         </ul>
                     </div>
                 </div>
@@ -86,7 +95,7 @@
     <div class="wrapper">
         <main>
             <div class="section-wrapper">
-                <h2 class="section-header">Today</h2>
+                <h2 class="section-header">All</h2>
                 <span>3 task</span> <!--Number of tasks and subtasks-->
             </div>
             <div class="tasks-wrapper-main">

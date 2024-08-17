@@ -1,10 +1,14 @@
 export default class Form {
-  static clearInput(input) {
-    input = '';
-    return input;
+  static resetForm(formName, additionalResets) {
+    formName.reset();
+    if (additionalResets) {
+      additionalResets();
+    }
   }
 
-  static resetFormFields = (formName) => formName.reset();
+  static #collectData = (form) => new FormData(form);
 
-  static collectData = (form) => new FormData(form);
+  static getCollectedData(form) {
+    return Form.#collectData(form);
+  }
 }
