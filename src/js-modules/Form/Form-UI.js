@@ -29,11 +29,8 @@ export default class FormUI {
       selected: true,
       textContent: 'Select project',
     });
-    const home = createDomElement('option', { // Carefull with this one if you want to be able to delete it in the future
-      textContent: 'Home',
-    });
 
-    select.append(placeHolderOption, home);
+    select.append(placeHolderOption);
   }
 
   static updateOptionList(listOfProjects) {
@@ -42,42 +39,10 @@ export default class FormUI {
     this.#createNewOption(listOfProjects);
   }
 
-  static createSubTaskUI() {
-    const subTaskGroup = document.querySelector('.subtask-group');
-    const subtaskTextArea = document.querySelector('.subtask-textarea');
-
-    const subtaskDiv = createDomElement('div', {
-      className: 'subtask',
-    });
-
-    const subtaskPara = createDomElement('input', {
-      value: `${subtaskTextArea.value}`,
-      type: 'text',
-      name: 'subtask',
-    });
-
-    const deleteSubtaskBtn = createDomElement('button', {
-      type: 'button',
-    });
-
-    const crossIcon = createDomElement('i', {
-      className: 'fa-solid fa-xmark',
-    });
-
-    deleteSubtaskBtn.append(crossIcon);
-
-    subtaskDiv.append(subtaskPara, deleteSubtaskBtn);
-
-    subTaskGroup.append(subtaskDiv);
-
-    /* Clear subtask input field after adding */
-    subtaskTextArea.value = FormUI.clearInput(subtaskTextArea); // remove to diff place
-  }
-
-  static deleteSubtaskUI(e) {
-    const clickedSubtask = e.target.parentNode.parentNode;
-    if (e.target.classList.contains('fa-xmark')) {
-      clickedSubtask.remove();
-    }
-  }
+  // static deleteSubtaskUI(e) {
+  //   const clickedSubtask = e.target.parentNode.parentNode;
+  //   if (e.target.classList.contains('fa-xmark')) {
+  //     clickedSubtask.remove();
+  //   }
+  // }
 }

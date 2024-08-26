@@ -142,7 +142,8 @@ nav > .projects-wrapper-list > div {
 }
 
 /*===TASK-LIST===*/
-.navigation-li > * {
+.navigation-li > *,
+.project-btn > i {
     pointer-events: none; /*Prevents icon to be listed in e.target click event*/
 }
 
@@ -170,10 +171,26 @@ li:hover {
     margin: 5px 0;
 }
 
-.delete-project-btn {
+.delete-task-btn {
     color: var(--first-color);
     border-radius: var(--default-border-radius);
-    padding: 8px;
+}
+
+.project-btn-wrapper {
+    display: flex;
+    gap: 4px;
+}
+
+.project-btn-wrapper > button:hover {
+    border: 1px solid #8d8d8d;
+}
+
+.delete-project-btn,
+.edit-project-btn {
+    color: var(--first-color);
+    padding: 4px 10px;
+    border: 1px solid transparent;
+    width: 36px;
 }
 
 .navigation-li-proj {
@@ -223,7 +240,6 @@ li:hover {
 
 .task-wrapper-buttons {
     flex-direction: column;
-    gap: 2px;
 }
 
 .task{
@@ -288,25 +304,23 @@ li:hover {
     color: var(--hover-background);
     border-radius: var(--default-border-radius);
     transition: var(--header-transition);
-    margin-left: 10px;
-}
-
-.fa-rectangle-xmark:hover,
-.fa-square-pen:hover,
-.fa-square-check:hover {
-   transform: scale(110%);
 }
 
 .task-wrapper-buttons > button > .fa-rectangle-xmark {
-    font-size: 1.45rem;
+    font-size: 1.3rem;
 }
 
 .task-wrapper-buttons > button > .fa-square-check{
-    font-size: 1.7rem;
+    font-size: 1.5rem;
 }
 
 .task-wrapper-buttons> button > .fa-square-pen {
-    font-size: 1.62rem;
+    font-size: 1.5rem;
+}
+
+.project-btn {
+    width: 21.01px;
+    margin-left: 10px;
 }
 
 .projects-list-wrapper,
@@ -609,11 +623,28 @@ main > div {
         border-radius: 0 0 var(--default-border-radius) var(--default-border-radius);
         padding: 10px 0;
     }
-
+    
     .form-wrapper.expand-form {
         grid-template-rows: 1fr;
         border: 1px solid var(--highlight-color);
         border-radius: var(--default-border-radius);
+    }
+
+    .update-wrapper {
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 20px;
+        border-radius: 0 0 var(--default-border-radius) var(--default-border-radius);
+    }
+
+    .update-wrapper > button {
+        background-color: lightblue;
+        padding: 10px 35px;
+        background-color: var(--highlight-color);
+    }
+
+    .hidden {
+        display: none;
     }
     /*===dialog ADD PROJECT===*/
 
@@ -688,3 +719,7 @@ https://www.youtube.com/watch?v=P80sM7ausCA*/
 /*USE DATE PICKER TO STYLE CALENDAR? I DONT LIKE THAT YOU SHOULD CLICK OTHER BUTTON TO CHOOSE DATE*/
 
 /*Show more change to show-less...*/
+/*Set one font size and font boldness for each input in task form*/
+/*Посмотреть как делают всплывающие тултипы удалить/редактировать в остальных проектах*/
+/*Project form can't be empty - project name i mean*/
+/*You can't delete Default project*/

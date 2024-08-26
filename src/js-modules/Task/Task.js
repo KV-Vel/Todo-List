@@ -26,6 +26,8 @@ export default class Task {
       newTask.priority,
       newTask.subtasks,
     );
+
+    console.log(Task.allInstances);
   }
 
   static get allInstances() {

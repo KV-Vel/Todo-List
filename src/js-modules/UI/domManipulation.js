@@ -7,52 +7,52 @@ import Project from '../Project/Project';
 // import ProjectUI from '../Project/Project-UI';
 
 /* Header slide left and right  */
-const burgerMenuInput = document.querySelector('input');
-const header = document.querySelector('header');
+// const burgerMenuInput = document.querySelector('input');
+// const header = document.querySelector('header');
 
-function toggleBurgerMenu() {
-  header.classList.toggle('shrink-menu');
-}
+// function toggleBurgerMenu() {
+//   header.classList.toggle('shrink-menu');
+// }
 
-burgerMenuInput.addEventListener('change', toggleBurgerMenu);
+// burgerMenuInput.addEventListener('change', toggleBurgerMenu);
 
 /* Add task form expand */
-const addTaskBtn = document.querySelector('.add-task-btn');
-const formWrapper = document.querySelector('.form-wrapper');
+// const addTaskBtn = document.querySelector('.add-task-btn');
+// const formWrapper = document.querySelector('.form-wrapper');
 
-function expandForm() {
-  formWrapper.classList.toggle('expand-form');
-}
+// function expandForm() {
+//   formWrapper.classList.toggle('expand-form');
+// }
 
-addTaskBtn.addEventListener('click', expandForm);
+// addTaskBtn.addEventListener('click', expandForm);
 
 /* Dialog add project, close and open */
-const addProjectBtn = document.querySelector('.add-project-btn');
-const dialog = document.querySelector('dialog');
+// const addProjectBtn = document.querySelector('.add-project-btn');
+// const dialog = document.querySelector('dialog');
 
-function showDialog() {
-  dialog.showModal();
-}
+// function showDialog() {
+//   dialog.showModal();
+// }
 
-addProjectBtn.addEventListener('click', showDialog);
+// addProjectBtn.addEventListener('click', showDialog);
 
-const modalCloseBtn = document.querySelector('.close-modal');
+// const modalCloseBtn = document.querySelector('.close-modal');
 
-function closeModal() {
-  dialog.close();
-}
+// function closeModal() {
+//   dialog.close();
+// }
 
-modalCloseBtn.addEventListener('click', closeModal);
+// modalCloseBtn.addEventListener('click', closeModal);
 
 /* Project list show/hide */
-const showProjectsBtn = document.querySelector('.show-projects-list');
-const projectsList = document.querySelector('.projects-list');
+// const showProjectsBtn = document.querySelector('.show-projects-list');
+// const projectsList = document.querySelector('.projects-list');
 
-function hideProjects() {
-  projectsList.classList.toggle('hidden');
-}
+// function hideProjects() {
+//   projectsList.classList.toggle('hidden');
+// }
 
-showProjectsBtn.addEventListener('click', hideProjects);
+// showProjectsBtn.addEventListener('click', hideProjects);
 
 /* Toggling active class for navbar lists */
 const navLi = document.querySelector('nav');
@@ -65,31 +65,41 @@ navLi.addEventListener('click', (e) => {
   }
 });
 
-function deleteProject(e) {
-  if (e.target.classList.contains('fa-trash-can')) {
-    const dataNameAttributeOfProject = e.target.parentNode.parentNode.getAttribute('data-name');
-    const projectElement = e.target.parentNode.parentNode;
-    UI.removeFoundActiveStyle();
-    // UI delete Project
-    projectElement.remove();
-    // Inner delete from array
-    Project.deleteProject(dataNameAttributeOfProject);
+// function deleteProject(e) {
+//   if (e.target.classList.contains('fa-trash-can')) {
+//     const dataNameAttributeOfProject = e.target.parentNode.parentNode.getAttribute('data-name');
+//     const projectElement = e.target.parentNode.parentNode;
+//     UI.removeFoundActiveStyle();
+//     // UI delete Project
+//     projectElement.remove();
+//     // Inner delete from array
+//     Project.deleteProject(dataNameAttributeOfProject);
 
-    UI.selectTabByAttribute('data-name', 'All');
-    FormUI.updateOptionList(Project.getAllProjects());
-  }
-}
+//     UI.selectTabByAttribute('data-name', 'All');
+//     FormUI.updateOptionList(Project.getAllProjects());
+//   }
+// }
 
 // delete project event
 projectsList.addEventListener('click', deleteProject);
-/* Add subtask to form */
-const subTaskButton = document.querySelector('.subtask-add-btn');
-subTaskButton.addEventListener('click', FormUI.createSubTaskUI);
+
+// delete task event
+function deleteTaskUI(e) {
+  if (e.target.classList.contains('fa-rectangle-xmark')) {
+    const taskElement = e.target.parentNode.parentNode;
+    taskElement.remove();
+    Task.deleteProject();
+  }
+}
+
+// /* Add subtask to form */
+// const subTaskButton = document.querySelector('.subtask-add-btn');
+// subTaskButton.addEventListener('click', FormUI.createSubTaskUI);
 
 /* Delete subtask btn */
-const subtaskGroup = document.querySelector('.subtask-group');
+// const subtaskGroup = document.querySelector('.subtask-group');
 
-subtaskGroup.addEventListener('click', FormUI.deleteSubtaskUI);
+// subtaskGroup.addEventListener('click', FormUI.deleteSubtaskUI);
 
 /* Event listeners for creating task and project */
 const [taskForm, projectForm] = document.querySelectorAll('form');
@@ -107,7 +117,7 @@ projectForm.addEventListener('submit', (e) => {
 
   const collectedData = Form.getCollectedData(projectForm);
 
-  Project.createProject(collectedData);
+  // Project.createProject(collectedData);
   FormUI.updateOptionList(Project.getAllProjects());
   Form.resetForm(projectForm);
   dialog.close();

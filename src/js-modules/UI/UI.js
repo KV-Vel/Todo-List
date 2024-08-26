@@ -1,13 +1,13 @@
 import Form from '../Form/Form';
 // import Project from '../Project/Project';
 
-export function createDomElement(tag, properties) {
-  const el = document.createElement(tag);
-  for (const key in properties) {
-    el[key] = properties[key];
-  }
-  return el;
-}
+// export function createDomElement(tag, properties) {
+//   const el = document.createElement(tag);
+//   for (const key in properties) {
+//     el[key] = properties[key];
+//   }
+//   return el;
+// }
 
 export default class UI {
   static setSectionHeaderFromAttribute(elem, dataAttributeName) {
