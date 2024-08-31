@@ -10,7 +10,8 @@ export default class Controller {
     this.view.bindHandleTask(this.handleTask);
     this.view.bindEditTask(this.handleEditTask);
     this.view.bindEditProject(this.handleEditProject);
-    this.view.bindHandleTabs(this.handleTabs);
+    this.view.bindProjTabs(this.handleProjectTabs);
+    this.view.bindStaticTabs(this.handleStaticTabs);
   }
 
   initDefault() {
@@ -19,37 +20,64 @@ export default class Controller {
     this.view.displayTasks(this.taskLogic.getTasks());
   }
 
-  handleTabs = (ProjectId) => {
-    this.view.displayTasks(this.taskLogic.getTasksById(ProjectId));
+  handleProjectTabs = (projectId) => {
+    this.view.displayTasks(this.taskLogic.getTasksById(projectId));
+    this.view.handleActiveStyle('id', projectId);
+  };
+
+  handleStaticTabs = (tabName) => {
+    switch (tabName) {
+      case 'All':
+        this.view.displayTasks(this.taskLogic.getTasks());
+        this.view.handleActiveStyle('name', tabName);
+        break;
+      case 'Today':
+        this.view.displayTasks(this.taskLogic.getTodayTasks());
+        this.view.handleActiveStyle('name', tabName);
+        break;
+      case 'Next 7 days':
+        this.view.displayTasks(this.taskLogic.getNext7DaysTasks());
+        this.view.handleActiveStyle('name', tabName);
+        break;
+      case 'Next 30 days':
+        this.view.displayTasks(this.taskLogic.getNext30DaysTasks());
+        this.view.handleActiveStyle('name', tabName);
+        break;
+      case 'Completed':
+        this.view.displayTasks(this.taskLogic.getCompletedTasks());
+        this.view.handleActiveStyle('name', tabName);
+        break;
+      default:
+        throw new Error('No such filter');
+    }
   };
 
   handleAddProject = (formData) => {
     this.projectLogic.createProject(formData);
     this.view.displayProjects(this.projectLogic.getProjects());
+    this.handleProjectTabs(this.projectLogic.getProjects().at(-1).id);
   };
 
   handleDeleteProject = (id) => {
     this.projectLogic.deleteProject(id);
     this.view.updateOptionList(this.projectLogic.getProjects());
-    // Change deleted project to default project Home
+    this.handleStaticTabs('All');
   };
 
-  handleAddTask = (formData, activeTab) => {
+  handleAddTask = (formData, tabName) => {
     this.taskLogic.createTask(formData);
-    if (activeTab.getAttribute('data-id')) {
-      this.view.displayTasks(this.taskLogic.getTasksById(activeTab.getAttribute('data-id')));
-    } else {
-      console.log('error'); // add in future logic to parse text data attr
-    }
+    this.handleActiveTab(tabName);
   };
 
-  handleTask = (id, className) => {
+  handleTask = (id, className, tabName) => {
     switch (className) {
       case 'delete-task-btn':
         this.taskLogic.deleteTask(id);
+        this.handleActiveTab(tabName);
         break;
       case 'check-task-btn':
         this.taskLogic.completeTask(id);
+        this.handleActiveTab(tabName);
         break;
       case 'change-task-btn':
         this.view.fillTaskForm(this.taskLogic.getTaskInformation(id));
@@ -59,9 +87,9 @@ export default class Controller {
     }
   };
 
-  handleEditTask = (id, data) => {
+  handleEditTask = (id, data, tabName) => {
     this.taskLogic.editTask(id, data);
-    this.view.displayTasks(this.taskLogic.getTasks());
+    this.handleActiveTab(tabName);
   };
 
   handleCompleteTask = (id) => {
@@ -69,12 +97,20 @@ export default class Controller {
   };
 
   handleEditProject = (id, newName) => {
-    console.log(newName);
     this.projectLogic.editProject(id, newName);
+    this.handleProjectTabs(id);
     this.view.displayProjects(this.projectLogic.getProjects());
+    this.view.addActiveStyle('id', id);
   };
+
+  handleActiveTab(activeTab) {
+    if (activeTab.getAttribute('data-id')) {
+      this.handleProjectTabs(activeTab.getAttribute('data-id'));
+    } else if (activeTab.getAttribute('data-name')) {
+      this.handleStaticTabs(activeTab.getAttribute('data-name'));
+    }
+  }
 }
 
-// Deleted project should set all its tasks to Home
 // Home project cant be deleted
-// Delete any project should then set focus to All projects
+// Shom more add setTimeout like css style shrink

@@ -61,7 +61,7 @@
                         </form>
                     </div>
                 </div>
-                <ul>
+                <ul class="static-tabs">
                     <li data-name="All" class="navigation navigation-li active"><div class="icon-wrapper"><i class="fa-solid fa-globe"></i></div>All</li>
                     <li data-name="Today" class="navigation navigation-li"><div class="icon-wrapper"><i class="fa-solid fa-exclamation"></i></div>Today</li>
                     <li data-name="Next 7 days" class="navigation navigation-li"><div class="icon-wrapper"><i class="fa-solid fa-7"></i></div>Next 7 days</li>
@@ -102,8 +102,15 @@
     <div class="wrapper">
         <main>
             <div class="section-wrapper">
-                <h2 class="section-header">All</h2>
-                <span>3 task</span> <!--Number of tasks and subtasks-->
+                <div class="project-info">
+                    <h2 class="section-header">All</h2>
+                    <span class="task-counter"></span>
+                </div>
+                <div class="date-wrapper">
+                    <span class="weekday"></span>
+                    <span class="day-num"></span>
+                    <span class="month"></span>
+                </div>
             </div>
             <div class="tasks-wrapper-main">
                 <!-- <div class="task">

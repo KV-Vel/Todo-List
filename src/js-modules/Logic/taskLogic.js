@@ -1,7 +1,9 @@
+import date from '../utility/utility';
+
 export default class Task {
-  static #tasks = [{
-    title: 'Demo', description: "Hello, i'm demo task", deadline: '2024-08-31', projectID: '123', priority: 'red', subtasks: ['Demo subtask 1', 'Demo subtask 2'], id: '987', isCompleted: false,
-  }];
+  static #tasks = [
+    new Task('Demo', "Hello, i'm demo task", '2024-08-30', '123', 'red', ['Demo subtask 1', 'Demo subtask 2'], '987', false),
+  ];
 
   static #allTasks() {
     return this.#tasks;
@@ -17,11 +19,11 @@ export default class Task {
 
   constructor(title, description, deadline, projectID, priority, subtasks = []) {
     this.title = title;
-    this.description = description || 'Empty';
+    this.description = description || '';
     this.deadline = deadline;
     this.projectID = projectID;
     this.priority = priority;
-    this.subtasks = subtasks || 'Empty';
+    this.subtasks = subtasks || '';
     this.id = String(Date.now());
     this.isCompleted = false;
   }
@@ -45,11 +47,37 @@ export default class Task {
 
   completeTask(id) {
     const matchedTask = Task.#findTask(id);
-    matchedTask.isCompleted = true;
+    if (!matchedTask.isCompleted) {
+      matchedTask.isCompleted = true;
+    } else {
+      matchedTask.isCompleted = false;
+    }
   }
 
   getTasks() {
-    return Task.#allTasks();
+    return Task.#allTasks().filter((task) => task.isCompleted === false);
+  }
+
+  getTodayTasks() {
+    return Task.#allTasks().filter((task) => date.isToday(task.deadline) && task.isCompleted === false);
+  }
+
+  getNext7DaysTasks() {
+    return Task.#allTasks().filter((task) => date.isWithinInterval(task.deadline, {
+      start: date.TODAY,
+      end: date.getNext7Days,
+    }) && task.isCompleted === false);
+  }
+
+  getNext30DaysTasks() {
+    return Task.#allTasks().filter((task) => date.isWithinInterval(task.deadline, {
+      start: date.TODAY,
+      end: date.getNext30Days,
+    }) && task.isCompleted === false);
+  }
+
+  getCompletedTasks() {
+    return Task.#allTasks().filter((task) => task.isCompleted);
   }
 
   getTasksById(id) {
@@ -65,20 +93,21 @@ export default class Task {
     newTitle,
     newDescription,
     newDeadline,
-    newProject,
+    newProjectID,
     newPriority,
     newSubtasks,
   ) {
     foundTask.title = newTitle;
     foundTask.description = newDescription;
     foundTask.deadline = newDeadline;
-    foundTask.project = newProject;
+    foundTask.projectID = newProjectID;
     foundTask.priority = newPriority;
     foundTask.subtasks = newSubtasks;
   }
 
   editTask(id, formData) {
     const matchedTask = Task.#tasks.find((task) => task.id === id);
+    console.log(...formData);
     this.editTaskParams(
       matchedTask,
       ...formData.getAll('title'),

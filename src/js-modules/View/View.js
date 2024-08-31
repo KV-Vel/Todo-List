@@ -1,3 +1,5 @@
+import date from '../utility/utility';
+
 export default class View {
   static #resetForm(form) {
     form.reset();
@@ -63,7 +65,16 @@ export default class View {
 
   static #removeFoundActiveStyle() {
     const activeStyle = View.#findActiveStyle();
-    activeStyle.classList.remove('active');
+    if (activeStyle) {
+      activeStyle.classList.remove('active');
+    }
+  }
+
+  static addCurrentDate() {
+    const weekday = document.querySelector('.weekday');
+    const dayNum = document.querySelector('.day-num');
+    const month = document.querySelector('.month');
+    [weekday.textContent, dayNum.textContent, month.textContent] = [date.textWeekDay, date.DAY, date.textMonth];
   }
 
   static getOptionFromOptionList(projID) {
@@ -140,7 +151,11 @@ export default class View {
 
     this.navBar = document.querySelector('nav');
 
-    // this.allTab = document.querySelector('li[]')
+    this.defaultTabs = document.querySelector('.static-tabs');
+
+    this.allTasksTab = document.querySelector('li[data-name = "All"]');
+    this.taskCounter = document.querySelector('.task-counter');
+    this.sectionHeader = document.querySelector('.section-header');
   }
 
   /* Header slide left and right  */
@@ -190,6 +205,7 @@ export default class View {
       View.#resetForm(this.taskForm);
     });
     this.navBar.addEventListener('click', (e) => { this.eventChangeTabStyle(e); });
+    window.addEventListener('DOMContentLoaded', () => { View.addCurrentDate(); });
   }
 
   /* Create Project */
@@ -201,6 +217,7 @@ export default class View {
 
       this.dialog.close();
       View.#resetForm(this.projectForm);
+      // this.sectionHeader.textContent = `#${[...data.getAll('project-name')]}`;
     });
   }
 
@@ -213,6 +230,7 @@ export default class View {
       if (e.target.classList.contains('fa-trash-can')) {
         handler(projectID);
         projectEl.remove();
+        this.allTasksTab.classList.add('active');
       }
     });
   }
@@ -222,13 +240,13 @@ export default class View {
       const taskID = e.target.parentNode.parentNode.parentNode.getAttribute('data-taskid');
       const taskEl = e.target.parentNode.parentNode.parentNode;
       if (e.target.classList.contains('delete-task-btn')) {
-        handler(taskID, 'delete-task-btn');
+        handler(taskID, 'delete-task-btn', View.#findActiveStyle());
         taskEl.remove();
       } else if (e.target.classList.contains('check-task-btn')) {
-        handler(taskID, 'check-task-btn');
+        handler(taskID, 'check-task-btn', View.#findActiveStyle());
       } else if (e.target.classList.contains('change-task-btn')) {
         this.#setForChangeTask();
-        handler(taskID, 'change-task-btn');
+        handler(taskID, 'change-task-btn', View.#findActiveStyle());
       }
     });
   }
@@ -242,14 +260,16 @@ export default class View {
       data.set('project', selectedOption.getAttribute('data-id'));
       handler(data, View.#findActiveStyle());
 
-      // View.#resetForm(this.taskForm);
+      View.#resetForm(this.taskForm);
     });
   }
 
   bindEditTask(handler) {
     this.editTaskBtn.addEventListener('click', () => {
       const data = new FormData(this.taskForm);
-      handler(this.#updatingTaskId, data);
+      const selectedOption = document.querySelector('option:checked');
+      data.set('project', selectedOption.getAttribute('data-id'));
+      handler(this.#updatingTaskId, data, View.#findActiveStyle());
 
       View.#resetForm(this.taskForm);
       this.createTaskBtn.classList.remove('hidden');
@@ -263,17 +283,27 @@ export default class View {
         e.preventDefault();
         handler(this.#updatingProjectId, this.addProjectInput.value);
         this.dialog.close();
+        this.sectionHeader.textContent = `#${this.addProjectInput.value}`;
         View.#resetForm(this.projectForm);
         this.editProjectSubmitBtn.textContent = 'Confirm';
       }
     });
   }
 
-  bindHandleTabs(handler) {
+  bindProjTabs(handler) {
     this.projectsList.addEventListener('click', (e) => {
       if (e.target.classList.contains('navigation-li-proj')) {
-        console.log('ok');
         handler(e.target.getAttribute('data-id'));
+        // this.sectionHeader.textContent = e.target.textContent;
+      }
+    });
+  }
+
+  bindStaticTabs(handler) {
+    this.defaultTabs.addEventListener('click', (e) => {
+      if (e.target.getAttribute('data-name')) {
+        handler(e.target.getAttribute('data-name'));
+        // this.sectionHeader.textContent = e.target.textContent;
       }
     });
   }
@@ -307,7 +337,7 @@ export default class View {
     subTaskGroup.append(subtaskDiv);
 
     /* Clear subtask input field after adding */
-    this.subtaskTextArea.value = ''; // Make private function!!!!!
+    this.subtaskTextArea.value = '';
   }
 
   /* UI of Task */
@@ -333,7 +363,7 @@ export default class View {
       textContent: title,
     });
     const taskDueDate = View.createDomElement('span', {
-      textContent: deadline,
+      textContent: `${date.formatDate(deadline)}`,
     });
     const taskPriority = View.createDomElement('span', {
       textContent: 'Priority: ',
@@ -505,17 +535,18 @@ export default class View {
 
   displayTasks(tasks) {
     View.#deleteAllTaskUI();
-    tasks.forEach((task) => this.createTaskUI(
-      task.title,
-      task.description,
-      task.deadline,
-      task.projectID,
-      task.priority,
-      task.subtasks,
-      task.id,
-    ));
-    View.#resetForm(this.taskForm);
-    // View.#resetForm(this.taskForm);
+    if (tasks) {
+      tasks.forEach((task) => this.createTaskUI(
+        task.title,
+        task.description,
+        task.deadline,
+        task.projectID,
+        task.priority,
+        task.subtasks,
+        task.id,
+      ));
+    }
+    this.displayTaskCounter(tasks);
   }
 
   displayProjects(projects) {
@@ -555,5 +586,28 @@ export default class View {
 
     this.#updatingTaskId = task.id;
   }
+
+  addActiveStyle(attrName, attrValue) {
+    const el = document.querySelector(`li[data-${attrName}="${attrValue}"]`);
+    if (View.#findActiveStyle()) {
+      View.#removeFoundActiveStyle();
+      el.classList.add('active');
+    } else {
+      el.classList.add('active');
+    }
+    return el;
+  }
+
+  displayTaskCounter(tasksArr) {
+    if (tasksArr.length === 1) {
+      this.taskCounter.textContent = `${tasksArr.length} task`;
+    } else {
+      this.taskCounter.textContent = `${tasksArr.length} tasks`;
+    }
+  }
+
+  handleActiveStyle(nameAttr, info) {
+    const choosenEl = this.addActiveStyle(nameAttr, info);
+    this.sectionHeader.textContent = choosenEl.textContent;
+  }
 }
-// https://vk.com/wall-105439414_352
