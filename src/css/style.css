@@ -415,23 +415,21 @@ main > div {
 
 .section-wrapper {
     display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--second-color);
+}
+
+.section-wrapper > .project-info {
+    display: flex;
     align-items: center;
     gap: 15px;
     position: relative;
     padding-left: 5px;
 }
 
-.section-wrapper::after {
-    content:'';
-    position: absolute;
-    top: 45px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: var(--second-color);
-}
-
-.section-wrapper > span {
+.section-wrapper > .project-info > span {
     color: var(--second-color);
     background-color: var(--hover-background);
     padding: 10px;
@@ -441,6 +439,25 @@ main > div {
 .section-header {
     font-size: 2em; /*Add to variables?*/
 }
+
+.date-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+.month, .weekday {
+    font-weight: 800;
+    filter: opacity(85%);
+}
+
+.day-num {
+    font-weight: 900;
+    font-size: 2rem;
+}
+
+
 
 
 /*===FORM ADD TASK===*/
@@ -697,7 +714,6 @@ main > div {
     }
 /**
 1) Add checklist when clicking on task
-2) Add number of tasks next to li for each
 3) Взять еще Второй шрифт?
 https://fontawesome.com/search?p=2&o=r&m=free
 https://www.notion.so/Getting-Started-766bbf7f76854e6f8d717b4c801a87fc
@@ -709,17 +725,14 @@ https://app.todoist.com/app/today
 /*Глянуть
 https://www.youtube.com/watch?v=P80sM7ausCA*/
 
-/*Сделать чтобы сбоку от задачи отображалась дата тип Thu
-                                                      30
-                                                      November*/
-
 /*https://app.any.do/tasks/next-seven-days?d=anydo%3A%2F%2Fanydo%3Faction%3Dtasktab
 
-
-/*USE DATE PICKER TO STYLE CALENDAR? I DONT LIKE THAT YOU SHOULD CLICK OTHER BUTTON TO CHOOSE DATE*/
-
-/*Show more change to show-less...*/
 /*Set one font size and font boldness for each input in task form*/
 /*Посмотреть как делают всплывающие тултипы удалить/редактировать в остальных проектах*/
 /*Project form can't be empty - project name i mean*/
 /*You can't delete Default project*/
+/*MOZILLA IE CHECK*/
+/*Return from bin*/
+/*Сделаьб вкладки по типу Todo - Home, Todo - All*/
+/*При сжатии next 30 и next 7 херится стиль*/
+/*Show somehow that task is completed with style and make one to make Uncomplete it*/
