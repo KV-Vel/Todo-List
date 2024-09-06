@@ -1,3 +1,5 @@
+import Storage from '../utility/localStorage';
+
 export default class Controller {
   constructor(taskLogic, projectLogic, view) {
     this.taskLogic = taskLogic;
@@ -15,7 +17,9 @@ export default class Controller {
   }
 
   initDefault() {
-    this.view.initializeListeners();
+    this.view.initialize();
+
+    Storage.initLocalStorage();
     this.view.displayProjects(this.projectLogic.getProjects());
     this.view.displayTasks(this.taskLogic.getTasks());
   }
@@ -60,6 +64,7 @@ export default class Controller {
 
   handleDeleteProject = (id) => {
     this.projectLogic.deleteProject(id);
+    this.taskLogic.redifineTasks(id);
     this.view.updateOptionList(this.projectLogic.getProjects());
     this.handleStaticTabs('All');
   };
@@ -69,8 +74,8 @@ export default class Controller {
     this.handleActiveTab(tabName);
   };
 
-  handleTask = (id, className, tabName) => {
-    switch (className) {
+  handleTask = (id, identifier, tabName) => {
+    switch (identifier) {
       case 'delete-task-btn':
         this.taskLogic.deleteTask(id);
         this.handleActiveTab(tabName);
@@ -82,6 +87,9 @@ export default class Controller {
       case 'change-task-btn':
         this.view.fillTaskForm(this.taskLogic.getTaskInformation(id));
         break;
+      case 'checkbox':
+        this.taskLogic.toggleSubtask(id, tabName.at(-1));
+        break;
       default:
         throw new Error('Error');
     }
@@ -90,10 +98,6 @@ export default class Controller {
   handleEditTask = (id, data, tabName) => {
     this.taskLogic.editTask(id, data);
     this.handleActiveTab(tabName);
-  };
-
-  handleCompleteTask = (id) => {
-    this.taskLogic.completeTask(id);
   };
 
   handleEditProject = (id, newName) => {
@@ -111,6 +115,3 @@ export default class Controller {
     }
   }
 }
-
-// Home project cant be deleted
-// Shom more add setTimeout like css style shrink

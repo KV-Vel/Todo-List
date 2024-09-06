@@ -6,14 +6,12 @@ export default class View {
     if (form.classList.contains('new-task-form')) {
       View.#deleteAllSubtasks();
 
-      // selecting disabled option by default, otherwise doesn't work
-      // choosing first option
+      // selecting disabled option by default
       document.querySelector('option').selected = true;
     }
   }
 
   static #deleteAllSubtasks() {
-    // removing subtasks
     const subtasks = document.querySelectorAll('.subtask');
     subtasks.forEach((subtask) => subtask.remove());
   }
@@ -32,6 +30,7 @@ export default class View {
 
   static #deleteAllOptions() {
     const allOptions = document.querySelectorAll('option');
+
     allOptions.forEach((option) => option.remove());
   }
 
@@ -59,7 +58,8 @@ export default class View {
   }
 
   static #findActiveStyle() {
-    const [...navigation] = document.querySelectorAll('.navigation'); // This method should be private
+    const [...navigation] = document.querySelectorAll('.navigation');
+
     return navigation.find((elem) => elem.classList.contains('active'));
   }
 
@@ -156,9 +156,10 @@ export default class View {
     this.allTasksTab = document.querySelector('li[data-name = "All"]');
     this.taskCounter = document.querySelector('.task-counter');
     this.sectionHeader = document.querySelector('.section-header');
+
+    this.appTitle = document.querySelector('title');
   }
 
-  /* Header slide left and right  */
   eventToggleBurgerMenu() {
     this.header.classList.toggle('shrink-menu');
   }
@@ -168,7 +169,6 @@ export default class View {
     this.formWrapper.classList.toggle('expand-form');
   }
 
-  /* Project list show/hide */
   eventHideProjects() {
     this.projectsList.classList.toggle('hidden');
   }
@@ -181,7 +181,7 @@ export default class View {
     }
   }
 
-  initializeListeners() {
+  initialize() {
     this.burgerMenuInput.addEventListener('change', () => { this.eventToggleBurgerMenu(); });
     this.addTaskBtn.addEventListener('click', () => { this.eventExpandForm(); });
     this.addProjectBtn.addEventListener('click', () => { this.dialog.showModal(); });
@@ -206,9 +206,10 @@ export default class View {
     });
     this.navBar.addEventListener('click', (e) => { this.eventChangeTabStyle(e); });
     window.addEventListener('DOMContentLoaded', () => { View.addCurrentDate(); });
+
+    this.appTitle.textContent = 'Todo List — All';
   }
 
-  /* Create Project */
   bindCreateProjectUI(handler) {
     this.projectForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -217,17 +218,15 @@ export default class View {
 
       this.dialog.close();
       View.#resetForm(this.projectForm);
-      // this.sectionHeader.textContent = `#${[...data.getAll('project-name')]}`;
     });
   }
 
-  /* Delete Project */
   bindDeleteProjectUI(handler) {
     this.projectsList.addEventListener('click', (e) => {
-      const projectID = e.target.parentNode.parentNode.parentNode.getAttribute('data-id');
-      const projectEl = e.target.parentNode.parentNode.parentNode;
+      const projectEl = e.target.closest('li');
+      const projectID = projectEl.getAttribute('data-id');
 
-      if (e.target.classList.contains('fa-trash-can')) {
+      if (e.target.classList.contains('delete-project-btn') && projectID !== '123') {
         handler(projectID);
         projectEl.remove();
         this.allTasksTab.classList.add('active');
@@ -237,8 +236,8 @@ export default class View {
 
   bindHandleTask(handler) {
     this.taskWrapper.addEventListener('click', (e) => {
-      const taskID = e.target.parentNode.parentNode.parentNode.getAttribute('data-taskid');
-      const taskEl = e.target.parentNode.parentNode.parentNode;
+      const taskEl = e.target.closest('.task');
+      const taskID = taskEl.getAttribute('data-taskid');
       if (e.target.classList.contains('delete-task-btn')) {
         handler(taskID, 'delete-task-btn', View.#findActiveStyle());
         taskEl.remove();
@@ -247,6 +246,8 @@ export default class View {
       } else if (e.target.classList.contains('change-task-btn')) {
         this.#setForChangeTask();
         handler(taskID, 'change-task-btn', View.#findActiveStyle());
+      } else if (e.target.type === 'checkbox' && e.target.id) {
+        handler(e.target.closest('.task').getAttribute('data-taskid'), 'checkbox', e.target.id);
       }
     });
   }
@@ -255,9 +256,9 @@ export default class View {
     this.taskForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const data = new FormData(this.taskForm);
-
       const selectedOption = document.querySelector('option:checked');
       data.set('project', selectedOption.getAttribute('data-id'));
+
       handler(data, View.#findActiveStyle());
 
       View.#resetForm(this.taskForm);
@@ -284,6 +285,7 @@ export default class View {
         handler(this.#updatingProjectId, this.addProjectInput.value);
         this.dialog.close();
         this.sectionHeader.textContent = `#${this.addProjectInput.value}`;
+        this.appTitle.textContent = `Todo List — #${this.addProjectInput.value}`;
         View.#resetForm(this.projectForm);
         this.editProjectSubmitBtn.textContent = 'Confirm';
       }
@@ -294,7 +296,6 @@ export default class View {
     this.projectsList.addEventListener('click', (e) => {
       if (e.target.classList.contains('navigation-li-proj')) {
         handler(e.target.getAttribute('data-id'));
-        // this.sectionHeader.textContent = e.target.textContent;
       }
     });
   }
@@ -303,7 +304,6 @@ export default class View {
     this.defaultTabs.addEventListener('click', (e) => {
       if (e.target.getAttribute('data-name')) {
         handler(e.target.getAttribute('data-name'));
-        // this.sectionHeader.textContent = e.target.textContent;
       }
     });
   }
@@ -341,9 +341,8 @@ export default class View {
   }
 
   /* UI of Task */
-  createTaskUI(title, description, deadline, project, priority, subtasks, id) {
+  createTaskUI(title, description, deadline, project, priority, subtasks, id, isCompleted) {
     const taskWrapper = document.querySelector('.tasks-wrapper-main');
-
     const taskDiv = View.createDomElement('div', {
       className: 'task',
     });
@@ -363,7 +362,7 @@ export default class View {
       textContent: title,
     });
     const taskDueDate = View.createDomElement('span', {
-      textContent: `${date.formatDate(deadline)}`,
+      textContent: `Deadline: ${date.formatDate(deadline)}`,
     });
     const taskPriority = View.createDomElement('span', {
       textContent: 'Priority: ',
@@ -383,12 +382,13 @@ export default class View {
       type: 'button',
       className: 'project-btn check-task-btn',
       click(e, handler) {
-        const taskID = e.target.parentNode.parentNode.parentNode.getAttribute('data-id');
+        const taskEl = e.target.closest('.task');
+        const taskID = taskEl.getAttribute('data-id');
         handler(taskID);
       },
     });
     const checkProjectBtnIcon = View.createDomElement('i', {
-      className: 'fa-solid fa-square-check',
+      className: isCompleted ? 'fa-solid fa-square-check completed' : 'fa-solid fa-square-check',
     });
     taskCheckProjectBtn.append(checkProjectBtnIcon);
 
@@ -515,9 +515,10 @@ export default class View {
       const liInput = View.createDomElement('input', {
         type: 'checkbox',
         id: `subtask${subtaskNumber}`,
+        checked: subtasks[subtaskNumber].isChecked,
       });
       const liLabel = View.createDomElement('label', {
-        textContent: subtasks[subtaskNumber],
+        textContent: subtasks[subtaskNumber].subtaskName,
         for: `subtask${subtaskNumber}`,
       });
       li.append(liInput, liLabel);
@@ -527,7 +528,7 @@ export default class View {
 
   /* Delete subtask UI */
   deleteSubtaskUI(e) {
-    const clickedSubtask = e.target.parentNode.parentNode;
+    const clickedSubtask = e.target.closest('.subtask');
     if (e.target.classList.contains('fa-xmark')) {
       clickedSubtask.remove();
     }
@@ -544,6 +545,7 @@ export default class View {
         task.priority,
         task.subtasks,
         task.id,
+        task.isCompleted,
       ));
     }
     this.displayTaskCounter(tasks);
@@ -582,7 +584,7 @@ export default class View {
     deadlineInput.value = task.deadline;
     option.selected = true;
     priority.checked = true;
-    subtaskList.forEach((subtask) => this.createSubTaskUI(subtask));
+    subtaskList.forEach((subtask) => this.createSubTaskUI(subtask.subtaskName));
 
     this.#updatingTaskId = task.id;
   }
@@ -609,5 +611,6 @@ export default class View {
   handleActiveStyle(nameAttr, info) {
     const choosenEl = this.addActiveStyle(nameAttr, info);
     this.sectionHeader.textContent = choosenEl.textContent;
+    this.appTitle.textContent = `Todo List — ${choosenEl.textContent}`;
   }
 }

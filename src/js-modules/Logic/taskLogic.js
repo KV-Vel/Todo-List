@@ -1,9 +1,9 @@
 import date from '../utility/utility';
 
 export default class Task {
-  static #tasks = [
-    new Task('Demo', "Hello, i'm demo task", '2024-08-30', '123', 'red', ['Demo subtask 1', 'Demo subtask 2'], '987', false),
-  ];
+  static #tasks = JSON.parse(localStorage.getItem('tasks')) || [{
+    title: 'Demo', description: "Hello, i'm demo task", deadline: '2024-08-30', projectID: '123', priority: 'red', subtasks: [{ subtaskName: 'Demo subtask 1', isChecked: false }, { subtaskName: 'Demo subtask 2', isChecked: false }], id: '987', isCompleted: false,
+  }];
 
   static #allTasks() {
     return this.#tasks;
@@ -15,6 +15,14 @@ export default class Task {
 
   static addTaskInstance(task) {
     Task.#tasks.push(task);
+  }
+
+  static createSubTaskObj(subtasksArr) {
+    const res = [];
+    for (const key of subtasksArr) {
+      res.push({ subtaskName: key, isChecked: false });
+    }
+    return res;
   }
 
   constructor(title, description, deadline, projectID, priority, subtasks = []) {
@@ -35,14 +43,15 @@ export default class Task {
       ...formData.getAll('deadline'),
       ...formData.getAll('project'),
       ...formData.getAll('priority'),
-      formData.getAll('subtask'),
+      Task.createSubTaskObj(formData.getAll('subtask')),
     );
     Task.addTaskInstance(newTask);
-    console.log(newTask);
+    localStorage.setItem('tasks', JSON.stringify(Task.#allTasks()));
   }
 
   deleteTask(id) {
     Task.#tasks = Task.#tasks.filter((projectID) => projectID.id !== id);
+    localStorage.setItem('tasks', JSON.stringify(Task.#allTasks()));
   }
 
   completeTask(id) {
@@ -52,10 +61,22 @@ export default class Task {
     } else {
       matchedTask.isCompleted = false;
     }
+    localStorage.setItem('tasks', JSON.stringify(Task.#allTasks()));
+  }
+
+  toggleSubtask(taskID, subtaskID) {
+    const matchedTask = Task.#findTask(taskID);
+    if (!matchedTask.subtasks[subtaskID.at(-1)].isChecked) {
+      matchedTask.subtasks[subtaskID.at(-1)].isChecked = true;
+    } else {
+      matchedTask.subtasks[subtaskID.at(-1)].isChecked = false;
+    }
+
+    localStorage.setItem('tasks', JSON.stringify(Task.#allTasks()));
   }
 
   getTasks() {
-    return Task.#allTasks().filter((task) => task.isCompleted === false);
+    return Task.#allTasks().filter((task) => !task.isCompleted);
   }
 
   getTodayTasks() {
@@ -88,36 +109,23 @@ export default class Task {
     return Task.#findTask(id);
   }
 
-  editTaskParams(
-    foundTask,
-    newTitle,
-    newDescription,
-    newDeadline,
-    newProjectID,
-    newPriority,
-    newSubtasks,
-  ) {
-    foundTask.title = newTitle;
-    foundTask.description = newDescription;
-    foundTask.deadline = newDeadline;
-    foundTask.projectID = newProjectID;
-    foundTask.priority = newPriority;
-    foundTask.subtasks = newSubtasks;
+  redifineTasks(id) {
+    const matchedTasks = this.getTasks().filter((task) => task.projectID === id);
+    // If project deleted set it's tasks to default undelitable project
+    matchedTasks.forEach((task) => task.projectID = '123');
   }
 
   editTask(id, formData) {
-    const matchedTask = Task.#tasks.find((task) => task.id === id);
-    console.log(...formData);
-    this.editTaskParams(
-      matchedTask,
-      ...formData.getAll('title'),
-      ...formData.getAll('description'),
-      ...formData.getAll('deadline'),
-      ...formData.getAll('project'),
-      ...formData.getAll('priority'),
-      formData.getAll('subtask'),
-    );
+    const matchedTask = Task.#findTask(id);
+    const editedTask = {
+      title: formData.getAll('title')[0],
+      description: formData.getAll('description')[0],
+      deadline: formData.getAll('deadline')[0],
+      projectID: formData.getAll('project')[0],
+      priority: formData.getAll('priority')[0],
+      subtasks: Task.createSubTaskObj(formData.getAll('subtask')),
+    };
+    Object.assign(matchedTask, editedTask);
+    localStorage.setItem('tasks', JSON.stringify(Task.#allTasks()));
   }
 }
-
-// Когда добавляется проект в нажатый на таб элемент, то сначала он начинает отображаться в текущей вкладке хоть и не соответствует текущему проекту

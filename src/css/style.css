@@ -8,6 +8,7 @@
     --text-color: #ffffff;
     --default-border-radius: 5px;
     --hover-background: #e0e0cb;
+    --completed-task: #8dee899e;
     
     /*===TASK PRIORITIES===*/
     --priority1: 192, 56, 59;
@@ -25,10 +26,8 @@
 
 body {
     display: flex;
-
     font-size: var(--desktop-font-size);
     font-family: 'Manrope', sans-serif;
-    
 }
 
 /*====HEADER====*/
@@ -41,7 +40,7 @@ button {
 
 header,
 .header-wrapper {
-    width: 300px; /*in future change to 320px?*/
+    width: 300px;
     min-height: 100vh;  
     position: fixed;
     z-index: 1;   
@@ -51,7 +50,7 @@ header.shrink-menu {
     width: 0;
 }
 
-header{ 
+header { 
     height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
@@ -74,12 +73,8 @@ header{
     padding: var(--header-padding);
     border-radius: var(--default-border-radius);
     position: absolute;
-
     top: 15px;
     left: 230px;
-
-    cursor: pointer;
-
     z-index: 2;
 }
 
@@ -87,7 +82,10 @@ header{
     background-color: #f5f5dc3b;
 }
 
-i {
+i,
+li, 
+.side-menu-icon,
+.form-priority-inputs > label {
     cursor: pointer;
 }
 
@@ -143,7 +141,8 @@ nav > .projects-wrapper-list > div {
 
 /*===TASK-LIST===*/
 .navigation-li > *,
-.project-btn > i {
+.project-btn > i,
+.delete-project-btn > i {
     pointer-events: none; /*Prevents icon to be listed in e.target click event*/
 }
 
@@ -153,15 +152,14 @@ li,
     align-items: center;
 }
 
-li {
-    cursor: pointer;
+li,
+.projects-wrapper-header > h2,
+.show-projects-list,
+input[type="date"] {
     color: var(--second-color);
 }
 
-li:hover {
-    background-color: var(--hover-background);
-}
-
+li:hover,
 .navigation-li.active {
     background-color: var(--hover-background);
 }
@@ -193,22 +191,14 @@ li:hover {
     width: 36px;
 }
 
-.navigation-li-proj {
-    display: flex;
-    justify-content: space-between;
-    
-}
 
 .icon-wrapper {
     height: 36px;
     width: 35px;
-
     padding: 2px;
     margin-right: 15px;
-
     background-color: var(--first-color);
     border-radius: 5px;
-
     text-align: center;
 }
 
@@ -220,10 +210,6 @@ li:hover {
     justify-content: space-between;
 }
 
-.projects-wrapper-header > h2 {
-    color: var(--second-color);
-}
-
 .add-task-wrapper {
     display: flex;
     flex-direction: column;
@@ -233,18 +219,20 @@ li:hover {
 
 .visible-part,
 .task-wrapper,
-.task-wrapper-buttons {
+.task-wrapper-buttons,
+.navigation-li-proj {
     display: flex;
     justify-content: space-between;
 }
 
-.task-wrapper-buttons {
+.task-wrapper-buttons,
+.task-wrapper {
     flex-direction: column;
 }
 
 .task{
     background-color: var(--first-color);
-    padding: 1.2rem 2rem;
+    padding: 1.1rem 2rem;
     border-radius: 15px;
     margin-bottom: 15px;
 }
@@ -253,32 +241,25 @@ li:hover {
     border-bottom: 3px solid transparent;
 }
 
-.projects-list > li:hover {
+.projects-list > li:hover,
+.navigation-li-proj.active {
     border-bottom: 3px solid var(--first-color);
 }
 
 .navigation-li-proj.active {
     background-color: var(--hover-background);
-    border-bottom: 3px solid var(--first-color);
 }
 
-.task-wrapper{
-    flex-direction: column;
+.task-wrapper {
     gap: 10px;
 }
 
 .hidden-part {
     font-size: 0.8rem;
     margin-top: 10px;
-
-    display:grid;
+    display: grid;
     grid-template-rows: 0fr;
     transition: grid-template-rows 500ms;
-    
-}
-
-.hidden-part-wrapper {
-    overflow: hidden;
 }
 
 .hidden-part-wrapper > p {
@@ -314,7 +295,7 @@ li:hover {
     font-size: 1.5rem;
 }
 
-.task-wrapper-buttons> button > .fa-square-pen {
+.task-wrapper-buttons > button > .fa-square-pen {
     font-size: 1.5rem;
 }
 
@@ -323,13 +304,54 @@ li:hover {
     margin-left: 10px;
 }
 
+.check-task-btn,
+.change-task-btn,
+.delete-task-btn {
+    position: relative;
+}
+
+.check-task-btn::before,
+.change-task-btn::before,
+.delete-task-btn::before {
+    content: '';
+    position: absolute;
+    right: 25px;
+    line-height: 2;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Manrope', sans-serif;
+    color: var(--header-background);
+    scale: 0;
+    transition: 150ms ease scale;
+    transform-origin: right;
+}
+
+.check-task-btn:hover::before {
+    content: 'Complete';
+    scale: 1;
+}
+
+.change-task-btn:hover::before {
+    content: 'Edit';
+    scale: 1;
+}
+
+.delete-task-btn:hover::before {
+    content: 'Delete';
+    scale: 1;
+    
+}
+
+.projects-list-wrapper {
+    position: relative;
+}
+
 .projects-list-wrapper,
 .projects-wrapper-header {
     padding: 0 var(--header-padding);
 }
 
 .show-projects-list {
-    color: var(--second-color);
     margin-left: 5px;
 }
 
@@ -339,6 +361,26 @@ li:hover {
 
 .projects-list.hidden {
     animation: hideList 500ms both;
+}
+
+[data-id="123"] > .project-btn-wrapper > .delete-project-btn::before {
+    content: "Can't delete default project";
+    position: absolute;
+    top: 0;
+    left: 17%;
+    padding: 5px;
+    border-radius: var(--default-border-radius);
+    background-color: var(--highlight-color);
+    color: var(--text-color);
+    font-size: 12px;
+    font-weight: 800;
+    scale: 0;
+    transition: 125ms scale;
+    transform-origin: bottom;
+}
+
+[data-id="123"] > .project-btn-wrapper > .delete-project-btn:hover::before {
+    scale: 1;
 }
 
 @keyframes hideList {
@@ -357,6 +399,7 @@ li:hover {
 .expand-btn-wrapper > button {
     color: var(--header-background);
     font-style: italic;
+    padding: 5px;
 }
 /*===HEADER BUTTONS===*/
 
@@ -375,7 +418,6 @@ li:hover {
 .add-project-btn {
     height: 30px;
     width: 30px;
-
     padding: 0;
     margin-right: 30px;
 }
@@ -383,7 +425,6 @@ li:hover {
 button {
     color: var(--text-color);
     font-weight: 900;
-   
     border-radius: var(--default-border-radius);
 }
 
@@ -424,6 +465,7 @@ main > div {
 .section-wrapper > .project-info {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 15px;
     position: relative;
     padding-left: 5px;
@@ -437,14 +479,14 @@ main > div {
 }
 
 .section-header {
-    font-size: 2em; /*Add to variables?*/
+    font-size: 2em;
 }
 
 .date-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 .month, .weekday {
@@ -456,9 +498,6 @@ main > div {
     font-weight: 900;
     font-size: 2rem;
 }
-
-
-
 
 /*===FORM ADD TASK===*/
     .form-wrapper {
@@ -475,9 +514,13 @@ main > div {
         overflow: hidden;
     }
 
-    .new-task-form > label {
+    .new-task-form > label,
+    .new-task-form > .subtask-group {
         display: flex;
         flex-direction: column;
+    }
+
+    .new-task-form > label {
         margin: 20px 0 0 20px;
         color: var(--text-color);
         font-weight: 800;
@@ -485,25 +528,18 @@ main > div {
     }
 
     .new-task-form > .subtask-group {
-
         color: var(--second-color);
         width: 85%;
-        display: flex;
-        flex-direction: column;
         gap: 5px;
-        
         margin: 10px 20px 10px 20px;
     }
 
     .subtask {
         display: flex;
         justify-content: space-between;
-        
         font-size: 0.8rem;
         padding: var(--header-padding);
-        
         border-radius: var(--default-border-radius);
-        
         width: calc(100% - 24px);
         background-color: lightblue;
     }
@@ -519,17 +555,22 @@ main > div {
         margin-bottom: 20px;
     }
 
+    select {
+        font-family: 'Manrope', sans-serif;
+    }
+
     form > label > input[type="text"],
     form > label > textarea,
     input[type="date"],
     select {
         background-color: var(--text-color);
-       
         margin-top: 5px;
         border-radius: var(--default-border-radius);
         padding: 5px;
         border: 1px solid transparent;
         transition: var(--header-transition);
+        font-weight: 400;
+        font-size: 0.8rem;
     }
 
     .new-task-form > label > input:focus[type="text"],
@@ -539,13 +580,10 @@ main > div {
         outline: none;
     }
 
-    input[type="date"] {
-        color: var(--second-color);
-        font-weight: 500;
-    }
-
     input[type="checkbox"] {
         accent-color: var(--first-color);
+        outline: none;
+        box-shadow: inset 0px 0px 2px 2px var(--first-color);
     }
 
     .form-priority-inputs {
@@ -559,7 +597,6 @@ main > div {
         text-align: center;
         padding: 8px;
         border-radius: var(--default-border-radius);
-        cursor: pointer;
         opacity: 0.5;
         flex-grow: 1;
         transition: var(--header-transition);
@@ -617,8 +654,6 @@ main > div {
         top: 23px;
         left: 89%;
         color: blue;
-        /* padding: 14px 7px; */
-        
         height: 35px;
         width: 20px;
         border-radius: var(--default-border-radius);
@@ -628,7 +663,8 @@ main > div {
         background-color: lightblue;
     }
 
-    textarea {
+    textarea,
+    .hidden-part-wrapper {
         overflow: hidden;
     }
 
@@ -663,6 +699,7 @@ main > div {
     .hidden {
         display: none;
     }
+
     /*===dialog ADD PROJECT===*/
 
     dialog {
@@ -674,7 +711,6 @@ main > div {
     .add-project-form > div {
         position: relative;
         width: 100%;
-        
     }
 
     .add-project-input {
@@ -707,32 +743,18 @@ main > div {
         z-index: 99;
         padding: 5px;
     }
+
+    .completed {
+        color: var(--completed-task);
+    }
+    
     @media (min-width: 650px){
         header {
             position: static;  
         }
     }
-/**
-1) Add checklist when clicking on task
-3) Взять еще Второй шрифт?
-https://fontawesome.com/search?p=2&o=r&m=free
-https://www.notion.so/Getting-Started-766bbf7f76854e6f8d717b4c801a87fc
-https://coolors.co/palettes/popular/#7d8471
-https://www.youtube.com/watch?v=I6MKwkJcn7I
-https://www.youtube.com/watch?v=Nh-aFPbdnWo
-https://app.todoist.com/app/today
 
-/*Глянуть
-https://www.youtube.com/watch?v=P80sM7ausCA*/
-
-/*https://app.any.do/tasks/next-seven-days?d=anydo%3A%2F%2Fanydo%3Faction%3Dtasktab
-
-/*Set one font size and font boldness for each input in task form*/
-/*Посмотреть как делают всплывающие тултипы удалить/редактировать в остальных проектах*/
-/*Project form can't be empty - project name i mean*/
-/*You can't delete Default project*/
 /*MOZILLA IE CHECK*/
-/*Return from bin*/
-/*Сделаьб вкладки по типу Todo - Home, Todo - All*/
-/*При сжатии next 30 и next 7 херится стиль*/
-/*Show somehow that task is completed with style and make one to make Uncomplete it*/
+/*PUSH git and then make gh-pages and push to it also??? or make build to it
+add icon
+*/

@@ -34,8 +34,6 @@
                             </label>
                             <label>Project *
                                 <select required name="project">
-                                    <!-- <option value="" disabled selected>Select project</option> -->
-                                    <!-- <option>Home</option> -->
                                 </select>
                             </label>
                             <label>Priority
@@ -77,7 +75,7 @@
                             <form class="add-project-form">
                                 <div>
                                     <label>
-                                        <input type="text" class="add-project-input" placeholder="Enter new project name" name="project-name">
+                                        <input type="text" class="add-project-input" placeholder="Enter new project name" name="project-name" required>
                                     </label>
                                 </div>
                                 <button type="submit" class="add-project-submit">Confirm</button>
@@ -85,14 +83,7 @@
                         </dialog>
                     </div>
                     <div class="projects-list-wrapper">
-                        <ul class="projects-list">
-                            <!-- <li data-name="Home" class="navigation navigation-li-proj">#Home
-                                <div class="project-btn-wrapper">
-                                    <button class="edit-project-btn"><i class="fa-solid fa-pen"></i></button>
-                                    <button class="delete-project-btn"><i class="fa-solid fa-trash-can"></i></button>
-                                </div>
-                            </li> -->
-                            
+                        <ul class="projects-list tooltip">
                         </ul>
                     </div>
                 </div>
@@ -113,44 +104,6 @@
                 </div>
             </div>
             <div class="tasks-wrapper-main">
-                <!-- <div class="task">
-                    <div class="visible-part">
-                        <div class="task-wrapper">
-                            <h3>Task title And Something bigger</h3>
-                            <span>31.07.2024 (in 3 days)</span>
-                            <span>Priority: <i class="fa-solid fa-circle"></i></span>
-                        </div>
-                        <div class="task-wrapper-buttons">
-                            <button type="button" class="project-btn check-task-btn"><i class="fa-solid fa-square-check"></i></button>
-                            <button type="button" class="project-btn change-task-btn"><i class="fa-solid fa-square-pen"></i></button>
-                            <button type="button" class="project-btn delete-task-btn"><i class="fa-solid fa-rectangle-xmark"></i></button>
-                        </div>
-                    </div>
-                    <div class="hidden-part">
-                        <div class="hidden-part-wrapper">
-                            <p>Provident est, accusamus hic distinctio quas pariatur!Labore facere obcaecati quam veritatis ducimus fugiat officiis eveniet amet harum error quas illum beatae veniam quod, soluta qui repellat? Vel quaerat eius earum libero culpa accusantium alias quae enim!</p>
-                            <form>
-                                <ul>
-                                    <li>
-                                        <input type="checkbox" id="subtask1">
-                                        <label for="subtask1">Get better</label>
-                                    </li>
-                                    <li>
-                                        <input type="checkbox" id="subtask2">
-                                        <label for="subtask2">Keep grinding</label>
-                                    </li>
-                                    <li>
-                                        <input type="checkbox" id="subtask3">
-                                        <label for="subtask3">Do whatever it takes</label>
-                                    </li>
-                                </ul>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="expand-btn-wrapper">
-                        <button type="button" class="task-show-more-btn">Show more...</button>
-                    </div>
-                </div> -->
             </div>
         </main>
     </div>
